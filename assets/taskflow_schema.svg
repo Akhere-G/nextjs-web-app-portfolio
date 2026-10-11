@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="902" viewBox="0 0 1300 902" font-family="DejaVu Sans, Arial, sans-serif">
+<rect width="1300" height="902" fill="#f8fafc"/>
+<text x="40" y="48" font-size="26" font-weight="bold" fill="#0f172a">TaskFlow — Database Schema</text>
+<text x="40" y="70" font-size="13" fill="#64748b">Relational model (Flask + SQLAlchemy, MySQL). PK = primary key, FK = foreign key, UQ = unique.</text>
+<path d="M480,148.0 L410,148.0 L410,460.0 L380,460.0" fill="none" stroke="#16a34a" stroke-width="1.8"/>
+<text x="468" y="143.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">1</text>
+<text x="396" y="455.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">N</text>
+<path d="M480,148.0 L430,148.0 L430,594.0 L380,594.0" fill="none" stroke="#2563eb" stroke-width="1.8"/>
+<text x="468" y="143.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">1</text>
+<text x="396" y="589.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">N</text>
+<path d="M480,148.0 L450,148.0 L450,752.0 L380,752.0" fill="none" stroke="#9333ea" stroke-width="1.8"/>
+<text x="468" y="143.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">1</text>
+<text x="406" y="747.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">0..1</text>
+<path d="M820,148.0 L900,148.0 L900,172.0 L920,172.0" fill="none" stroke="#ea580c" stroke-width="1.8"/>
+<text x="832" y="143.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">1</text>
+<text x="910" y="167.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">N</text>
+<path d="M820,148.0 L880,148.0 L880,402.0 L920,402.0" fill="none" stroke="#0d9488" stroke-width="1.8"/>
+<text x="832" y="143.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">1</text>
+<text x="910" y="397.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">N</text>
+<path d="M820,148.0 L860,148.0 L860,632.0 L920,632.0" fill="none" stroke="#db2777" stroke-width="1.8"/>
+<text x="832" y="143.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">1</text>
+<text x="910" y="627.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">N</text>
+<rect x="483" y="103" width="340" height="156" rx="8" fill="#0f172a" opacity="0.08"/>
+<rect x="480" y="100" width="340" height="156" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+<path d="M480,136 V108 Q480,100 488,100 H812 Q820,100 820,108 V136 Z" fill="#0f172a"/>
+<text x="494" y="123" font-size="15" font-weight="bold" fill="#ffffff">users</text>
+<text x="494" y="152" font-size="12.5" fill="#0f172a">id</text>
+<text x="808" y="152" font-size="11" font-weight="bold" fill="#b45309" text-anchor="end">PK</text>
+<rect x="481" y="160" width="338" height="24" fill="#f1f5f9"/>
+<text x="494" y="176" font-size="12.5" fill="#0f172a">first_name</text>
+<text x="494" y="200" font-size="12.5" fill="#0f172a">last_name</text>
+<rect x="481" y="208" width="338" height="24" fill="#f1f5f9"/>
+<text x="494" y="224" font-size="12.5" fill="#0f172a">email</text>
+<text x="808" y="224" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="end">UQ</text>
+<text x="494" y="248" font-size="12.5" fill="#0f172a">password_hash</text>
+<rect x="43" y="103" width="340" height="372" rx="8" fill="#0f172a" opacity="0.08"/>
+<rect x="40" y="100" width="340" height="372" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+<path d="M40,136 V108 Q40,100 48,100 H372 Q380,100 380,108 V136 Z" fill="#0f172a"/>
+<text x="54" y="123" font-size="15" font-weight="bold" fill="#ffffff">tasks</text>
+<text x="54" y="152" font-size="12.5" fill="#0f172a">id</text>
+<text x="368" y="152" font-size="11" font-weight="bold" fill="#b45309" text-anchor="end">PK</text>
+<rect x="41" y="160" width="338" height="24" fill="#f1f5f9"/>
+<text x="54" y="176" font-size="12.5" fill="#0f172a">title</text>
+<text x="54" y="200" font-size="12.5" fill="#0f172a">description</text>
+<rect x="41" y="208" width="338" height="24" fill="#f1f5f9"/>
+<text x="54" y="224" font-size="12.5" fill="#0f172a">category</text>
+<text x="54" y="248" font-size="12.5" fill="#0f172a">is_completed</text>
+<rect x="41" y="256" width="338" height="24" fill="#f1f5f9"/>
+<text x="54" y="272" font-size="12.5" fill="#0f172a">start_at</text>
+<text x="54" y="296" font-size="12.5" fill="#0f172a">end_at</text>
+<rect x="41" y="304" width="338" height="24" fill="#f1f5f9"/>
+<text x="54" y="320" font-size="12.5" fill="#0f172a">created_at</text>
+<text x="54" y="344" font-size="12.5" fill="#0f172a">completed_at</text>
+<rect x="41" y="352" width="338" height="24" fill="#f1f5f9"/>
+<text x="54" y="368" font-size="12.5" fill="#0f172a">is_repeating</text>
+<text x="54" y="392" font-size="12.5" fill="#0f172a">repeat_by (ENUM)</text>
+<rect x="41" y="400" width="338" height="24" fill="#f1f5f9"/>
+<text x="54" y="416" font-size="12.5" fill="#0f172a">repeat_until</text>
+<text x="54" y="440" font-size="12.5" fill="#0f172a">series_id</text>
+<rect x="41" y="448" width="338" height="24" fill="#f1f5f9"/>
+<text x="54" y="464" font-size="12.5" fill="#0f172a">user_id</text>
+<text x="368" y="464" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="end">FK</text>
+<rect x="43" y="525" width="340" height="132" rx="8" fill="#0f172a" opacity="0.08"/>
+<rect x="40" y="522" width="340" height="132" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+<path d="M40,558 V530 Q40,522 48,522 H372 Q380,522 380,530 V558 Z" fill="#0f172a"/>
+<text x="54" y="545" font-size="15" font-weight="bold" fill="#ffffff">refresh_tokens</text>
+<text x="54" y="574" font-size="12.5" fill="#0f172a">id</text>
+<text x="368" y="574" font-size="11" font-weight="bold" fill="#b45309" text-anchor="end">PK</text>
+<rect x="41" y="582" width="338" height="24" fill="#f1f5f9"/>
+<text x="54" y="598" font-size="12.5" fill="#0f172a">user_id</text>
+<text x="368" y="598" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="end">FK</text>
+<text x="54" y="622" font-size="12.5" fill="#0f172a">token</text>
+<text x="368" y="622" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="end">UQ</text>
+<rect x="41" y="630" width="338" height="24" fill="#f1f5f9"/>
+<text x="54" y="646" font-size="12.5" fill="#0f172a">expires_at</text>
+<rect x="43" y="707" width="340" height="108" rx="8" fill="#0f172a" opacity="0.08"/>
+<rect x="40" y="704" width="340" height="108" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+<path d="M40,740 V712 Q40,704 48,704 H372 Q380,704 380,712 V740 Z" fill="#0f172a"/>
+<text x="54" y="727" font-size="15" font-weight="bold" fill="#ffffff">password_resets</text>
+<text x="54" y="756" font-size="12.5" fill="#0f172a">user_id</text>
+<text x="368" y="756" font-size="11" font-weight="bold" fill="#b45309" text-anchor="end">PK,FK</text>
+<rect x="41" y="764" width="338" height="24" fill="#f1f5f9"/>
+<text x="54" y="780" font-size="12.5" fill="#0f172a">token</text>
+<text x="54" y="804" font-size="12.5" fill="#0f172a">expires_at</text>
+<rect x="923" y="103" width="340" height="180" rx="8" fill="#0f172a" opacity="0.08"/>
+<rect x="920" y="100" width="340" height="180" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+<path d="M920,136 V108 Q920,100 928,100 H1252 Q1260,100 1260,108 V136 Z" fill="#0f172a"/>
+<text x="934" y="123" font-size="15" font-weight="bold" fill="#ffffff">notifications</text>
+<text x="934" y="152" font-size="12.5" fill="#0f172a">id</text>
+<text x="1248" y="152" font-size="11" font-weight="bold" fill="#b45309" text-anchor="end">PK</text>
+<rect x="921" y="160" width="338" height="24" fill="#f1f5f9"/>
+<text x="934" y="176" font-size="12.5" fill="#0f172a">user_id</text>
+<text x="1248" y="176" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="end">FK</text>
+<text x="934" y="200" font-size="12.5" fill="#0f172a">title</text>
+<rect x="921" y="208" width="338" height="24" fill="#f1f5f9"/>
+<text x="934" y="224" font-size="12.5" fill="#0f172a">message</text>
+<text x="934" y="248" font-size="12.5" fill="#0f172a">is_read</text>
+<rect x="921" y="256" width="338" height="24" fill="#f1f5f9"/>
+<text x="934" y="272" font-size="12.5" fill="#0f172a">created_at</text>
+<rect x="923" y="333" width="340" height="180" rx="8" fill="#0f172a" opacity="0.08"/>
+<rect x="920" y="330" width="340" height="180" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+<path d="M920,366 V338 Q920,330 928,330 H1252 Q1260,330 1260,338 V366 Z" fill="#0f172a"/>
+<text x="934" y="353" font-size="15" font-weight="bold" fill="#ffffff">notification_subscriptions</text>
+<text x="934" y="382" font-size="12.5" fill="#0f172a">id</text>
+<text x="1248" y="382" font-size="11" font-weight="bold" fill="#b45309" text-anchor="end">PK</text>
+<rect x="921" y="390" width="338" height="24" fill="#f1f5f9"/>
+<text x="934" y="406" font-size="12.5" fill="#0f172a">user_id</text>
+<text x="1248" y="406" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="end">FK</text>
+<text x="934" y="430" font-size="12.5" fill="#0f172a">endpoint</text>
+<text x="1248" y="430" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="end">UQ</text>
+<rect x="921" y="438" width="338" height="24" fill="#f1f5f9"/>
+<text x="934" y="454" font-size="12.5" fill="#0f172a">p256dh</text>
+<text x="934" y="478" font-size="12.5" fill="#0f172a">auth</text>
+<rect x="921" y="486" width="338" height="24" fill="#f1f5f9"/>
+<text x="934" y="502" font-size="12.5" fill="#0f172a">created_at</text>
+<rect x="923" y="563" width="340" height="156" rx="8" fill="#0f172a" opacity="0.08"/>
+<rect x="920" y="560" width="340" height="156" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+<path d="M920,596 V568 Q920,560 928,560 H1252 Q1260,560 1260,568 V596 Z" fill="#0f172a"/>
+<text x="934" y="583" font-size="15" font-weight="bold" fill="#ffffff">daily_briefs</text>
+<text x="934" y="612" font-size="12.5" fill="#0f172a">id</text>
+<text x="1248" y="612" font-size="11" font-weight="bold" fill="#b45309" text-anchor="end">PK</text>
+<rect x="921" y="620" width="338" height="24" fill="#f1f5f9"/>
+<text x="934" y="636" font-size="12.5" fill="#0f172a">user_id</text>
+<text x="1248" y="636" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="end">FK</text>
+<text x="934" y="660" font-size="12.5" fill="#0f172a">brief_text</text>
+<rect x="921" y="668" width="338" height="24" fill="#f1f5f9"/>
+<text x="934" y="684" font-size="12.5" fill="#0f172a">generated_date</text>
+<text x="1248" y="684" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="end">UQ*</text>
+<text x="934" y="708" font-size="12.5" fill="#0f172a">created_at</text>
+<text x="480" y="862" font-size="11.5" fill="#64748b">* generated_date is unique together with user_id (one daily brief per user per date)</text>
+</svg>

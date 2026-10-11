@@ -1,0 +1,227 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1540" height="1404" viewBox="0 0 1540 1404" font-family="DejaVu Sans, Arial, sans-serif">
+<rect width="1540" height="1404" fill="#f8fafc"/>
+<text x="40" y="48" font-size="26" font-weight="bold" fill="#0f172a">TripTrack — Database Schema</text>
+<text x="40" y="70" font-size="13" fill="#64748b">Relational model (Flask + SQLAlchemy). PK = primary key, FK = foreign key, UQ = unique.</text>
+<path d="M340,138.0 L380,138.0 L380,522.0 L580,522.0" fill="none" stroke="#2563eb" stroke-width="1.6"/>
+<text x="350" y="133.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">1</text>
+<text x="570" y="517.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">N</text>
+<path d="M340,138.0 L410,138.0 L410,546.0 L580,546.0" fill="none" stroke="#2563eb" stroke-width="1.6"/>
+<text x="350" y="133.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">1</text>
+<text x="570" y="541.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">N</text>
+<path d="M340,138.0 L440,138.0 L440,680.0 L580,680.0" fill="none" stroke="#2563eb" stroke-width="1.6"/>
+<text x="350" y="133.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">1</text>
+<text x="570" y="675.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">N</text>
+<path d="M80,270 L80,320" fill="none" stroke="#475569" stroke-width="1.6"/>
+<text x="90" y="284" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="start">1</text>
+<text x="90" y="314" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="start">N</text>
+<path d="M340,138.0 L360,138.0 L360,646.0 L340,646.0" fill="none" stroke="#2563eb" stroke-width="1.6"/>
+<text x="350" y="641.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">N</text>
+<path d="M620,558 L620,608" fill="none" stroke="#475569" stroke-width="1.6"/>
+<text x="630" y="572" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="start">1</text>
+<text x="630" y="602" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="start">N</text>
+<path d="M920,138.0 L960,138.0 L960,162.0 L1160,162.0" fill="none" stroke="#16a34a" stroke-width="1.6"/>
+<text x="930" y="133.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">1</text>
+<text x="1150" y="157.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">N</text>
+<path d="M920,138.0 L990,138.0 L990,584.0 L1160,584.0" fill="none" stroke="#16a34a" stroke-width="1.6"/>
+<text x="930" y="133.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">1</text>
+<text x="1150" y="579.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">N</text>
+<path d="M920,138.0 L1020,138.0 L1020,910.0 L1160,910.0" fill="none" stroke="#16a34a" stroke-width="1.6"/>
+<text x="930" y="133.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">1</text>
+<text x="1150" y="905.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">N</text>
+<path d="M1200,994 L1200,1044" fill="none" stroke="#475569" stroke-width="1.6"/>
+<text x="1210" y="1008" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="start">1</text>
+<text x="1210" y="1038" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="start">N</text>
+<path d="M340,138.0 L470,138.0 L470,84 L1110,84 L1110,426.0 L1160,426.0" fill="none" stroke="#9333ea" stroke-width="1.6"/>
+<text x="350" y="133.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">1</text>
+<text x="1150" y="421.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">N</text>
+<path d="M340,138.0 L480,138.0 L480,92 L1100,92 L1100,450.0 L1160,450.0" fill="none" stroke="#9333ea" stroke-width="1.6"/>
+<text x="350" y="133.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">1</text>
+<text x="1150" y="445.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">N</text>
+<path d="M340,138.0 L490,138.0 L490,100 L1080,100 L1080,608.0 L1160,608.0" fill="none" stroke="#9333ea" stroke-width="1.6"/>
+<text x="350" y="133.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">1</text>
+<text x="1150" y="603.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">N</text>
+<path d="M340,138.0 L500,138.0 L500,108 L1070,108 L1070,728.0 L1160,728.0" fill="none" stroke="#9333ea" stroke-width="1.6"/>
+<text x="350" y="133.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">1</text>
+<text x="1150" y="723.0" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">N</text>
+<rect x="43" y="93" width="300" height="180" rx="8" fill="#0f172a" opacity="0.08"/>
+<rect x="40" y="90" width="300" height="180" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+<path d="M40,126 V98 Q40,90 48,90 H332 Q340,90 340,98 V126 Z" fill="#0f172a"/>
+<text x="54" y="113" font-size="15" font-weight="bold" fill="#ffffff">users</text>
+<text x="54" y="142" font-size="12.5" fill="#0f172a">id</text>
+<text x="328" y="142" font-size="11" font-weight="bold" fill="#b45309" text-anchor="end">PK</text>
+<rect x="41" y="150" width="298" height="24" fill="#f1f5f9"/>
+<text x="54" y="166" font-size="12.5" fill="#0f172a">username</text>
+<text x="54" y="190" font-size="12.5" fill="#0f172a">email</text>
+<text x="328" y="190" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="end">UQ</text>
+<rect x="41" y="198" width="298" height="24" fill="#f1f5f9"/>
+<text x="54" y="214" font-size="12.5" fill="#0f172a">password_hash</text>
+<text x="54" y="238" font-size="12.5" fill="#0f172a">created_at</text>
+<rect x="41" y="246" width="298" height="24" fill="#f1f5f9"/>
+<text x="54" y="262" font-size="12.5" fill="#0f172a">updated_at</text>
+<rect x="43" y="323" width="300" height="204" rx="8" fill="#0f172a" opacity="0.08"/>
+<rect x="40" y="320" width="300" height="204" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+<path d="M40,356 V328 Q40,320 48,320 H332 Q340,320 340,328 V356 Z" fill="#0f172a"/>
+<text x="54" y="343" font-size="15" font-weight="bold" fill="#ffffff">notifications</text>
+<text x="54" y="372" font-size="12.5" fill="#0f172a">id</text>
+<text x="328" y="372" font-size="11" font-weight="bold" fill="#b45309" text-anchor="end">PK</text>
+<rect x="41" y="380" width="298" height="24" fill="#f1f5f9"/>
+<text x="54" y="396" font-size="12.5" fill="#0f172a">user_id</text>
+<text x="328" y="396" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="end">FK</text>
+<text x="54" y="420" font-size="12.5" fill="#0f172a">title</text>
+<rect x="41" y="428" width="298" height="24" fill="#f1f5f9"/>
+<text x="54" y="444" font-size="12.5" fill="#0f172a">message</text>
+<text x="54" y="468" font-size="12.5" fill="#0f172a">link_url</text>
+<rect x="41" y="476" width="298" height="24" fill="#f1f5f9"/>
+<text x="54" y="492" font-size="12.5" fill="#0f172a">is_read</text>
+<text x="54" y="516" font-size="12.5" fill="#0f172a">created_at</text>
+<rect x="43" y="577" width="300" height="180" rx="8" fill="#0f172a" opacity="0.08"/>
+<rect x="40" y="574" width="300" height="180" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+<path d="M40,610 V582 Q40,574 48,574 H332 Q340,574 340,582 V610 Z" fill="#0f172a"/>
+<text x="54" y="597" font-size="15" font-weight="bold" fill="#ffffff">notification_subscriptions</text>
+<text x="54" y="626" font-size="12.5" fill="#0f172a">id</text>
+<text x="328" y="626" font-size="11" font-weight="bold" fill="#b45309" text-anchor="end">PK</text>
+<rect x="41" y="634" width="298" height="24" fill="#f1f5f9"/>
+<text x="54" y="650" font-size="12.5" fill="#0f172a">user_id</text>
+<text x="328" y="650" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="end">FK</text>
+<text x="54" y="674" font-size="12.5" fill="#0f172a">endpoint</text>
+<text x="328" y="674" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="end">UQ</text>
+<rect x="41" y="682" width="298" height="24" fill="#f1f5f9"/>
+<text x="54" y="698" font-size="12.5" fill="#0f172a">p256dh</text>
+<text x="54" y="722" font-size="12.5" fill="#0f172a">auth</text>
+<rect x="41" y="730" width="298" height="24" fill="#f1f5f9"/>
+<text x="54" y="746" font-size="12.5" fill="#0f172a">created_at</text>
+<rect x="583" y="93" width="340" height="468" rx="8" fill="#0f172a" opacity="0.08"/>
+<rect x="580" y="90" width="340" height="468" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+<path d="M580,126 V98 Q580,90 588,90 H912 Q920,90 920,98 V126 Z" fill="#0f172a"/>
+<text x="594" y="113" font-size="15" font-weight="bold" fill="#ffffff">itineraries</text>
+<text x="594" y="142" font-size="12.5" fill="#0f172a">id</text>
+<text x="908" y="142" font-size="11" font-weight="bold" fill="#b45309" text-anchor="end">PK</text>
+<rect x="581" y="150" width="338" height="24" fill="#f1f5f9"/>
+<text x="594" y="166" font-size="12.5" fill="#0f172a">name</text>
+<text x="594" y="190" font-size="12.5" fill="#0f172a">destination</text>
+<rect x="581" y="198" width="338" height="24" fill="#f1f5f9"/>
+<text x="594" y="214" font-size="12.5" fill="#0f172a">latitude</text>
+<text x="594" y="238" font-size="12.5" fill="#0f172a">longitude</text>
+<rect x="581" y="246" width="338" height="24" fill="#f1f5f9"/>
+<text x="594" y="262" font-size="12.5" fill="#0f172a">description</text>
+<text x="594" y="286" font-size="12.5" fill="#0f172a">timezone</text>
+<rect x="581" y="294" width="338" height="24" fill="#f1f5f9"/>
+<text x="594" y="310" font-size="12.5" fill="#0f172a">start_date</text>
+<text x="594" y="334" font-size="12.5" fill="#0f172a">end_date</text>
+<rect x="581" y="342" width="338" height="24" fill="#f1f5f9"/>
+<text x="594" y="358" font-size="12.5" fill="#0f172a">viewer_code</text>
+<text x="594" y="382" font-size="12.5" fill="#0f172a">is_anonymous</text>
+<rect x="581" y="390" width="338" height="24" fill="#f1f5f9"/>
+<text x="594" y="406" font-size="12.5" fill="#0f172a">anonymous_access_code</text>
+<text x="594" y="430" font-size="12.5" fill="#0f172a">editor_code</text>
+<rect x="581" y="438" width="338" height="24" fill="#f1f5f9"/>
+<text x="594" y="454" font-size="12.5" fill="#0f172a">admin_code</text>
+<text x="594" y="478" font-size="12.5" fill="#0f172a">created_at</text>
+<rect x="581" y="486" width="338" height="24" fill="#f1f5f9"/>
+<text x="594" y="502" font-size="12.5" fill="#0f172a">updated_at</text>
+<text x="594" y="526" font-size="12.5" fill="#0f172a">created_by_id</text>
+<text x="908" y="526" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="end">FK</text>
+<rect x="581" y="534" width="338" height="24" fill="#f1f5f9"/>
+<text x="594" y="550" font-size="12.5" fill="#0f172a">updated_by_id</text>
+<text x="908" y="550" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="end">FK</text>
+<rect x="583" y="611" width="340" height="156" rx="8" fill="#0f172a" opacity="0.08"/>
+<rect x="580" y="608" width="340" height="156" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+<path d="M580,644 V616 Q580,608 588,608 H912 Q920,608 920,616 V644 Z" fill="#0f172a"/>
+<text x="594" y="631" font-size="15" font-weight="bold" fill="#ffffff">itinerary_users</text>
+<text x="594" y="660" font-size="12.5" fill="#0f172a">itinerary_id</text>
+<text x="908" y="660" font-size="11" font-weight="bold" fill="#b45309" text-anchor="end">PK,FK</text>
+<rect x="581" y="668" width="338" height="24" fill="#f1f5f9"/>
+<text x="594" y="684" font-size="12.5" fill="#0f172a">user_id</text>
+<text x="908" y="684" font-size="11" font-weight="bold" fill="#b45309" text-anchor="end">PK,FK</text>
+<text x="594" y="708" font-size="12.5" fill="#0f172a">role (admin/editor/viewer)</text>
+<rect x="581" y="716" width="338" height="24" fill="#f1f5f9"/>
+<text x="594" y="732" font-size="12.5" fill="#0f172a">created_at</text>
+<text x="594" y="756" font-size="12.5" fill="#0f172a">updated_at</text>
+<rect x="1163" y="93" width="340" height="372" rx="8" fill="#0f172a" opacity="0.08"/>
+<rect x="1160" y="90" width="340" height="372" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+<path d="M1160,126 V98 Q1160,90 1168,90 H1492 Q1500,90 1500,98 V126 Z" fill="#0f172a"/>
+<text x="1174" y="113" font-size="15" font-weight="bold" fill="#ffffff">events</text>
+<text x="1174" y="142" font-size="12.5" fill="#0f172a">id</text>
+<text x="1488" y="142" font-size="11" font-weight="bold" fill="#b45309" text-anchor="end">PK</text>
+<rect x="1161" y="150" width="338" height="24" fill="#f1f5f9"/>
+<text x="1174" y="166" font-size="12.5" fill="#0f172a">itinerary_id</text>
+<text x="1488" y="166" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="end">FK</text>
+<text x="1174" y="190" font-size="12.5" fill="#0f172a">name</text>
+<rect x="1161" y="198" width="338" height="24" fill="#f1f5f9"/>
+<text x="1174" y="214" font-size="12.5" fill="#0f172a">address</text>
+<text x="1174" y="238" font-size="12.5" fill="#0f172a">latitude</text>
+<rect x="1161" y="246" width="338" height="24" fill="#f1f5f9"/>
+<text x="1174" y="262" font-size="12.5" fill="#0f172a">longitude</text>
+<text x="1174" y="286" font-size="12.5" fill="#0f172a">description</text>
+<rect x="1161" y="294" width="338" height="24" fill="#f1f5f9"/>
+<text x="1174" y="310" font-size="12.5" fill="#0f172a">start_at</text>
+<text x="1174" y="334" font-size="12.5" fill="#0f172a">end_at</text>
+<rect x="1161" y="342" width="338" height="24" fill="#f1f5f9"/>
+<text x="1174" y="358" font-size="12.5" fill="#0f172a">category</text>
+<text x="1174" y="382" font-size="12.5" fill="#0f172a">created_at</text>
+<rect x="1161" y="390" width="338" height="24" fill="#f1f5f9"/>
+<text x="1174" y="406" font-size="12.5" fill="#0f172a">updated_at</text>
+<text x="1174" y="430" font-size="12.5" fill="#0f172a">created_by_id</text>
+<text x="1488" y="430" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="end">FK</text>
+<rect x="1161" y="438" width="338" height="24" fill="#f1f5f9"/>
+<text x="1174" y="454" font-size="12.5" fill="#0f172a">updated_by_id</text>
+<text x="1488" y="454" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="end">FK</text>
+<rect x="1163" y="515" width="340" height="276" rx="8" fill="#0f172a" opacity="0.08"/>
+<rect x="1160" y="512" width="340" height="276" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+<path d="M1160,548 V520 Q1160,512 1168,512 H1492 Q1500,512 1500,520 V548 Z" fill="#0f172a"/>
+<text x="1174" y="535" font-size="15" font-weight="bold" fill="#ffffff">packing_items</text>
+<text x="1174" y="564" font-size="12.5" fill="#0f172a">id</text>
+<text x="1488" y="564" font-size="11" font-weight="bold" fill="#b45309" text-anchor="end">PK</text>
+<rect x="1161" y="572" width="338" height="24" fill="#f1f5f9"/>
+<text x="1174" y="588" font-size="12.5" fill="#0f172a">itinerary_id</text>
+<text x="1488" y="588" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="end">FK</text>
+<text x="1174" y="612" font-size="12.5" fill="#0f172a">owner_id</text>
+<text x="1488" y="612" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="end">FK</text>
+<rect x="1161" y="620" width="338" height="24" fill="#f1f5f9"/>
+<text x="1174" y="636" font-size="12.5" fill="#0f172a">name</text>
+<text x="1174" y="660" font-size="12.5" fill="#0f172a">category</text>
+<rect x="1161" y="668" width="338" height="24" fill="#f1f5f9"/>
+<text x="1174" y="684" font-size="12.5" fill="#0f172a">is_shared</text>
+<text x="1174" y="708" font-size="12.5" fill="#0f172a">is_checked</text>
+<rect x="1161" y="716" width="338" height="24" fill="#f1f5f9"/>
+<text x="1174" y="732" font-size="12.5" fill="#0f172a">checked_by_id</text>
+<text x="1488" y="732" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="end">FK</text>
+<text x="1174" y="756" font-size="12.5" fill="#0f172a">created_at</text>
+<rect x="1161" y="764" width="338" height="24" fill="#f1f5f9"/>
+<text x="1174" y="780" font-size="12.5" fill="#0f172a">updated_at</text>
+<rect x="1163" y="841" width="340" height="156" rx="8" fill="#0f172a" opacity="0.08"/>
+<rect x="1160" y="838" width="340" height="156" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+<path d="M1160,874 V846 Q1160,838 1168,838 H1492 Q1500,838 1500,846 V874 Z" fill="#0f172a"/>
+<text x="1174" y="861" font-size="15" font-weight="bold" fill="#ffffff">wishlist_categories</text>
+<text x="1174" y="890" font-size="12.5" fill="#0f172a">id</text>
+<text x="1488" y="890" font-size="11" font-weight="bold" fill="#b45309" text-anchor="end">PK</text>
+<rect x="1161" y="898" width="338" height="24" fill="#f1f5f9"/>
+<text x="1174" y="914" font-size="12.5" fill="#0f172a">itinerary_id</text>
+<text x="1488" y="914" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="end">FK</text>
+<text x="1174" y="938" font-size="12.5" fill="#0f172a">name</text>
+<rect x="1161" y="946" width="338" height="24" fill="#f1f5f9"/>
+<text x="1174" y="962" font-size="12.5" fill="#0f172a">created_at</text>
+<text x="1174" y="986" font-size="12.5" fill="#0f172a">updated_at</text>
+<rect x="1163" y="1047" width="340" height="300" rx="8" fill="#0f172a" opacity="0.08"/>
+<rect x="1160" y="1044" width="340" height="300" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+<path d="M1160,1080 V1052 Q1160,1044 1168,1044 H1492 Q1500,1044 1500,1052 V1080 Z" fill="#0f172a"/>
+<text x="1174" y="1067" font-size="15" font-weight="bold" fill="#ffffff">wishlist_items</text>
+<text x="1174" y="1096" font-size="12.5" fill="#0f172a">id</text>
+<text x="1488" y="1096" font-size="11" font-weight="bold" fill="#b45309" text-anchor="end">PK</text>
+<rect x="1161" y="1104" width="338" height="24" fill="#f1f5f9"/>
+<text x="1174" y="1120" font-size="12.5" fill="#0f172a">wishlist_id</text>
+<text x="1488" y="1120" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="end">FK</text>
+<text x="1174" y="1144" font-size="12.5" fill="#0f172a">name</text>
+<rect x="1161" y="1152" width="338" height="24" fill="#f1f5f9"/>
+<text x="1174" y="1168" font-size="12.5" fill="#0f172a">address</text>
+<text x="1174" y="1192" font-size="12.5" fill="#0f172a">latitude</text>
+<rect x="1161" y="1200" width="338" height="24" fill="#f1f5f9"/>
+<text x="1174" y="1216" font-size="12.5" fill="#0f172a">longitude</text>
+<text x="1174" y="1240" font-size="12.5" fill="#0f172a">description</text>
+<rect x="1161" y="1248" width="338" height="24" fill="#f1f5f9"/>
+<text x="1174" y="1264" font-size="12.5" fill="#0f172a">place_id</text>
+<text x="1174" y="1288" font-size="12.5" fill="#0f172a">is_promoted</text>
+<rect x="1161" y="1296" width="338" height="24" fill="#f1f5f9"/>
+<text x="1174" y="1312" font-size="12.5" fill="#0f172a">created_at</text>
+<text x="1174" y="1336" font-size="12.5" fill="#0f172a">updated_at</text>
+</svg>

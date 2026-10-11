@@ -54,7 +54,7 @@ export default function ContactPage() {
               </div>
               <div>
                 <h3 className="font-semibold text-gray-900 mb-3">Location</h3>
-                <p className="text-gray-600">Available for remote work</p>
+                <p className="text-gray-600">London, UK</p>
               </div>
             </div>
           </div>

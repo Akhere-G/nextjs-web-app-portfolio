@@ -1,8 +1,8 @@
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import ProjectGrid from "@/components/ProjectGrid";
-import Footer from "@/components/Footer";
-import data from "@/lib/data";
+import Navbar from '@/components/Navbar';
+import Hero from '@/components/Hero';
+import ProjectGrid from '@/components/ProjectGrid';
+import Footer from '@/components/Footer';
+import data from '@/lib/data';
 
 export default function Home() {
   return (

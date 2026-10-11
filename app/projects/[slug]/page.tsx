@@ -1,9 +1,9 @@
-import { notFound } from 'next/navigation';
-import Image from 'next/image';
-import Link from 'next/link';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import data from '@/lib/data';
+import { notFound } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import data from "@/lib/data";
 
 interface PageProps {
   params: {
@@ -17,8 +17,9 @@ export async function generateStaticParams() {
   })) as Array<{ slug: string }>;
 }
 
-export default function ProjectDetailPage({ params }: PageProps) {
-  const project = data.find((p) => p.slug === params.slug);
+export default async function ProjectDetailPage({ params }: PageProps) {
+  const { slug } = await params;
+  const project = data.find((p) => p.slug === slug);
 
   if (!project) {
     notFound();
@@ -36,7 +37,7 @@ export default function ProjectDetailPage({ params }: PageProps) {
             >
               ← Back to Projects
             </Link>
-            <div className="aspect-video bg-gray-100 relative mb-8 max-w-4xl">
+            <div className="aspect-video bg-gray-100 relative mb-8 max-w-5xl">
               <Image
                 src={project.img}
                 alt={project.title}
@@ -48,6 +49,11 @@ export default function ProjectDetailPage({ params }: PageProps) {
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
               {project.title}
             </h1>
+            {project.pitch && (
+              <p className="text-xl text-gray-900 font-medium max-w-3xl mb-4">
+                {project.pitch}
+              </p>
+            )}
             <p className="text-lg text-gray-600 max-w-3xl mb-8">
               {project.desc}
             </p>
@@ -84,6 +90,17 @@ export default function ProjectDetailPage({ params }: PageProps) {
           </div>
         </section>
 
+        {project.coreProblem && (
+          <section className="bg-gray-50 border-b border-gray-200">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                Core Problem Solved
+              </h2>
+              <p className="text-gray-600 max-w-3xl">{project.coreProblem}</p>
+            </div>
+          </section>
+        )}
+
         {project.whyBuilt && (
           <section className="bg-gray-50 border-b border-gray-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
@@ -98,7 +115,9 @@ export default function ProjectDetailPage({ params }: PageProps) {
         {project.features && project.features.length > 0 && (
           <section className="bg-white border-b border-gray-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Features</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                Features
+              </h2>
               <ul className="space-y-3 max-w-3xl">
                 {project.features.map((feature, index) => (
                   <li key={index} className="text-gray-600 flex items-start">
@@ -124,6 +143,26 @@ export default function ProjectDetailPage({ params }: PageProps) {
           </section>
         )}
 
+        {project.databaseSchemaSrc && (
+          <section className="bg-white border-b border-gray-200">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                Database Modelling
+              </h2>
+              <div className="relative w-full min-h-200 bg-gray-100 mb-8 flex justify-center">
+                <Image
+                  src={project.databaseSchemaSrc.url}
+                  alt={`Schema for ${project.title}`}
+                  fill
+                  sizes="100vw"
+                  className="object-contain"
+                  priority
+                />
+              </div>
+            </div>
+          </section>
+        )}
+
         {project.challenges && project.challenges.length > 0 && (
           <section className="bg-white border-b border-gray-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
@@ -138,6 +177,19 @@ export default function ProjectDetailPage({ params }: PageProps) {
                   </li>
                 ))}
               </ul>
+            </div>
+          </section>
+        )}
+
+        {project.tradeoffs && (
+          <section className="bg-gray-50 border-b border-gray-200">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                Tradeoffs and Decisions
+              </h2>
+              <div className="text-gray-600 max-w-3xl whitespace-pre-line leading-relaxed">
+                {project.tradeoffs}
+              </div>
             </div>
           </section>
         )}

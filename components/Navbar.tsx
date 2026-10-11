@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 export default function Navbar() {
   return (
@@ -9,7 +9,7 @@ export default function Navbar() {
             href="/"
             className="text-lg font-semibold text-gray-900 hover:text-gray-700 transition-colors"
           >
-            Portfolio
+            Akhere Ihoeghinlan
           </Link>
 
           <div className="hidden md:flex items-center space-x-8">
