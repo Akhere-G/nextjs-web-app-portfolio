@@ -1,6 +1,6 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { Project } from '@/lib/data';
+import Image from "next/image";
+import Link from "next/link";
+import { Project } from "@/lib/data";
 
 interface ProjectGridProps {
   projects: Project[];
@@ -32,11 +32,14 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
                 {project.title}
               </Link>
             </h2>
-            <p className="text-sm text-gray-600 mb-4 overflow-hidden" style={{
-              display: '-webkit-box',
-              WebkitLineClamp: 3,
-              WebkitBoxOrient: 'vertical'
-            }}>
+            <p
+              className="text-sm text-gray-600 mb-4 overflow-hidden"
+              style={{
+                display: "-webkit-box",
+                WebkitLineClamp: 3,
+                WebkitBoxOrient: "vertical",
+              }}
+            >
               {project.desc}
             </p>
             <div className="flex flex-wrap gap-2 mb-4">
@@ -63,7 +66,7 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
               >
                 Live Site
               </Link>
-              {project.github.length > 0 && (
+              {project.github.length && (
                 <Link
                   href={project.github[0]}
                   target="_blank"
@@ -73,6 +76,12 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
                   GitHub
                 </Link>
               )}
+              <Link
+                href={`/projects/${project.slug}`}
+                className="text-gray-900 hover:text-gray-700 underline transition-colors"
+              >
+                Details
+              </Link>
             </div>
           </div>
         </article>
