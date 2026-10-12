@@ -1,14 +1,12 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import data from "@/lib/data";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export async function generateStaticParams() {
@@ -26,11 +24,9 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <Navbar />
-      <main className="flex-1">
-        <section className="bg-white border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+    <>
+      <section className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
             <Link
               href="/projects"
               className="text-sm text-gray-600 hover:text-gray-900 transition-colors inline-block mb-6"
@@ -202,8 +198,6 @@ export default async function ProjectDetailPage({ params }: PageProps) {
             </div>
           </section>
         )}
-      </main>
-      <Footer />
-    </div>
+    </>
   );
 }
