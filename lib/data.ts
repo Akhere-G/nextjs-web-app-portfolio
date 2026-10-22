@@ -21,7 +21,7 @@ const data: Project[] = [
   {
     title: "TripTrack",
     slug: "trip-track",
-    url: "https://tripapp-752853711822.europe-west2.run.app/",
+    url: "https://app.triptrack.uk/demo",
     img: "/assets/tripTrackPage.png",
     desc: "A collaborative holiday and event planning web app that combines interactive maps and daily calendar views with AI itinerary tools. Users can generate daily schedules with AI, optimise routes to cut travel time, and discover local places. Groups can plan together in real time with Admin and Viewer permissions, search venues with Google, and export their plans to their favourite calendar app.",
     pitch:
@@ -81,7 +81,7 @@ Backend:
   {
     title: "FileQuery",
     slug: "file-query",
-    url: "https://file-query-frontend-752853711822.europe-west1.run.app/",
+    url: "https://file-query-frontend-752853711822.europe-west1.run.app/demo",
     img: "/assets/fileQueryPage.png",
     desc: "A full-stack document search and Q&A platform that lets users upload documents into project folders and ask questions answered strictly from their files using Retrieval-Augmented Generation (RAG). It extracts text, breaks documents into smart sections, uses hybrid keyword and semantic search, and produces accurate AI answers with source citations.",
     pitch:
@@ -148,7 +148,7 @@ Cloud & Async Pipeline:
   {
     title: "Gains",
     slug: "gains",
-    url: "https://exercise-tracker-frontend-752853711822.europe-west1.run.app/exercises/2330",
+    url: "https://exercise-tracker-frontend-752853711822.europe-west1.run.app/demo",
     img: "/assets/gainsPage.png",
     desc: "A streamlined workout tracker and routine builder designed for the gym floor. Athletes can create custom training routines, log working sets in real time without lag, and view clear charts tracking strength gains and consistency over time.",
     pitch:
@@ -202,7 +202,7 @@ Backend:
   {
     title: "TaskFlow",
     slug: "task-flow",
-    url: "https://taskflow-752853711822.europe-west2.run.app/addtask",
+    url: "https://taskflow-752853711822.europe-west2.run.app/demo",
     img: "/assets/taskFlowPage.png",
     desc: "A smart task management web app designed to turn daily task lists into clear productivity insights. Features include flexible list and calendar views, automated repeating habits, an AI planning coach to decompose large projects, and an integrated Pomodoro focus timer with automated time logs.",
     pitch:
