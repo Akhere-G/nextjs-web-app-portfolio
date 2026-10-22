@@ -5,8 +5,10 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">About</h1>
           <p className="text-lg text-gray-600 max-w-3xl">
-            I&apos;m a full-stack developer passionate about building modern web
-            applications that solve real problems.
+            I&apos;m a full-stack developer who graduated from UCL with a
+            degree in Computer Science, now returning to software engineering
+            after a few years teaching. My projects are built to the standard
+            I want to bring to a production codebase.
           </p>
         </div>
       </section>
@@ -15,15 +17,22 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Background</h2>
           <p className="text-gray-600 max-w-3xl mb-4">
-            I have experience building full-stack applications using modern
-            technologies and best practices. My work spans from frontend
-            development with React and Next.js to backend services with Python
-            and cloud infrastructure.
+            I graduated from UCL in 2022 with a 2:1 in Computer Science, then
+            spent four months as a Frontend Engineering Intern at FundApps,
+            working on their stock ownership reporting product. From there I
+            joined Arkiter, an early-stage startup building technical
+            interview software, where I worked across the full stack and had
+            real ownership over architecture decisions and sprint planning in
+            a very small team.
           </p>
           <p className="text-gray-600 max-w-3xl">
-            I&apos;m focused on creating efficient, scalable solutions that
-            provide real value to users. I enjoy tackling complex problems and
-            learning new technologies to build better software.
+            I then moved into teaching Computing, which sharpened my
+            communication, leadership and ability to manage competing
+            priorities, but it also made clear that solving engineering
+            problems and building software is what I enjoy most. I&apos;ve
+            kept my technical skills current by building and shipping
+            personal projects like the ones below, each one taken from
+            requirements through design in Figma to a working, deployed app.
           </p>
         </div>
       </section>
@@ -76,8 +85,8 @@ export default function AboutPage() {
             Get in Touch
           </h2>
           <p className="text-gray-600 max-w-3xl mb-6">
-            Interested in working together or have a question? Feel free to
-            reach out.
+            Interested in working together, or have a question about one of
+            the projects? Feel free to reach out.
           </p>
           <a
             href="/contact"

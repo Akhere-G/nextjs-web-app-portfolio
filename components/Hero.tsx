@@ -10,9 +10,9 @@ export default function Hero() {
           </h1>
           <p className="text-3xl"> Full-Stack Developer</p>
           <p className="mt-6 text-lg text-gray-600 leading-relaxed">
-            Building modern web applications with React, Next.js, Python, and
-            cloud infrastructure. Focused on creating efficient, scalable
-            solutions that solve real problems.
+            I design and build full-stack web applications end to end, from
+            React and Next.js on the front end to Python APIs, relational
+            databases and cloud infrastructure on the back end.
           </p>
           <div className="mt-8">
             <Link

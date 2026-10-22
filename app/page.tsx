@@ -16,10 +16,11 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">About</h2>
           <p className="text-lg text-gray-600 max-w-3xl">
-            I&apos;m a full-stack developer focused on building modern web
-            applications. I work with React, Next.js, Python, and cloud
-            infrastructure to create efficient, scalable solutions that solve
-            real problems.
+            I&apos;m a full-stack developer with a background in React,
+            Next.js, Python and cloud infrastructure, returning to software
+            engineering after a spell teaching Computing. The projects below
+            are built to the same standard I&apos;d bring to a production
+            codebase.
           </p>
           <div className="mt-6">
             <a
@@ -35,8 +36,8 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">Contact</h2>
           <p className="text-lg text-gray-600 max-w-3xl">
-            Interested in working together? Get in touch to discuss your
-            project.
+            Looking for a backend-focused or full-stack engineer? I&apos;d be
+            glad to talk through any of the projects above in more detail.
           </p>
           <div className="mt-6">
             <a

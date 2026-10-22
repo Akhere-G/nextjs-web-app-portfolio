@@ -5,7 +5,8 @@ export default function ContactPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Contact</h1>
           <p className="text-lg text-gray-600 max-w-3xl">
-            Interested in working together or have a question? Get in touch.
+            Interested in working together, or have a question about one of
+            the projects? Get in touch.
           </p>
         </div>
       </section>
@@ -19,10 +20,10 @@ export default function ContactPage() {
             <div>
               <h3 className="font-semibold text-gray-900 mb-3">Email</h3>
               <a
-                href="mailto:akhereaihoeghinlan@gamil.com"
+                href="mailto:akhereaihoeghinlan@gmail.com"
                 className="text-gray-600 hover:text-gray-900 transition-colors"
               >
-                akhereaihoeghinlan@gamil.com
+                akhereaihoeghinlan@gmail.com
               </a>
             </div>
             <div>

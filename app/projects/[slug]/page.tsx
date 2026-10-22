@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import data from "@/lib/data";
+import { getFeatureIcon } from "@/lib/icons";
 
 interface PageProps {
   params: Promise<{
@@ -114,14 +115,28 @@ export default async function ProjectDetailPage({ params }: PageProps) {
               <h2 className="text-2xl font-bold text-gray-900 mb-6">
                 Features
               </h2>
-              <ul className="space-y-3 max-w-3xl">
-                {project.features.map((feature, index) => (
-                  <li key={index} className="text-gray-600 flex items-start">
-                    <span className="text-gray-400 mr-3">•</span>
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {project.features.map((feature) => {
+                  const Icon = getFeatureIcon(feature.icon);
+                  return (
+                    <div
+                      key={feature.title}
+                      className="border border-gray-200 bg-gray-50 p-6"
+                    >
+                      <Icon
+                        className="w-6 h-6 text-gray-900 mb-4"
+                        strokeWidth={1.75}
+                      />
+                      <h3 className="font-semibold text-gray-900 mb-2">
+                        {feature.title}
+                      </h3>
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        {feature.description}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </section>
         )}
