@@ -1,0 +1,91 @@
+# TaskFlow Engine
+
+A high-performance task engine designed to turn raw productivity data into actionable insights. Visualise your workflow, track your progress, manage your energy, and master your time.
+
+**🔗 [Live Deployment](https://taskflow-752853711822.europe-west2.run.app/addtask)** · **🎯 [Try the demo](https://taskflow-752853711822.europe-west2.run.app/demo)** (no sign-up needed)
+
+---
+
+## Core Features
+
+* **Smart Views:** Inbox, Today, Upcoming, Overdue, This week and This month sit in a sidebar (a closable panel on mobile), each with a live count. Switch any view between a list, a calendar (drag a task onto a new day to reschedule it in seconds) and an Eisenhower matrix (priorities 1 to 4 as four quadrants; drag a task to another quadrant to change its priority); everything, including search and sort, lives in the URL so views can be bookmarked.
+* **Kanban Board:** Pick a project and switch to Board to see its tasks as cards in columns. Every project starts with To Do, In Progress and Done; add, rename, recolour, reorder or delete your own. Each column decides what dropping a card does: do nothing, mark it complete, mark it incomplete, or move it to the trash. Tasks without a column sit in an Unassigned column, and each column shows a count chip.
+* **Projects & Labels:** Organise tasks into nested projects and tag them with labels. Pick a project, or "All", from the sidebar to filter the list.
+* **Inbox:** Capture a title-only task in one line, with no date or project, and triage it later.
+* **Priorities:** Mark tasks P1 to P4, then filter or sort by priority.
+* **Subtasks:** Break a task into a checklist with its own completion. The parent shows progress and completing it completes the open subtasks.
+* **Drag to Reorder:** Sort by "Manual" and drag cards into the order you want, with mouse, touch or keyboard. The order is saved.
+* **Seamless Habits:** Set tasks to repeat daily, weekly, monthly or yearly, with every-N intervals and chosen days. The system projects 'ghost tasks' into your future calendar so you can plan for upcoming commitments.
+* **Snooze:** Move a task to tomorrow, the weekend, next week or a date, keeping its time of day. Repeating tasks can skip to their next occurrence.
+* **Reminders:** Add several reminders per task: 30 minutes or 1 hour before, at the start of the day, or at a set time. Push notifications are sent by the reminder runner (see below).
+* **Trash:** Deleted tasks are kept for 30 days and can be restored.
+* **Priority Suggestions (AI):** From the matrix, ask the AI to review your open tasks and propose priority changes with a short reason each. Select the ones you want and accept them together, or dismiss the rest.
+* **Your Daily Brief (AI Coach):** Start your day with an AI coach that reviews pending and overdue tasks to suggest the best plan of action for a productive morning.
+* **Break It Down (AI Subtasks):** The built-in AI splits a large task into a clear checklist of smaller steps, saved as real subtasks.
+* **Quick-Add Tools:** Capture an idea in seconds by typing it the way you think; our AI assistant fills in the details so nothing slips away.
+* **Import and Export:** Bring in tasks from a CSV file in one go, with a simple or advanced template and examples of dated, dateless and repeating tasks, or export everything to CSV from Settings whenever you need a copy. The time zone is taken from your browser.
+* **Pomodoro Timer:** Boost focus using timed work intervals. When a session finishes you can mark the task complete straight away.
+* **Stats and Planning:** One Stats page shows your progress over time: a year-long activity map and 'Backlog Health' score, a week-ahead view of upcoming deadlines with charts flagging how close or overdue they are, and a breakdown of where your time goes per project over a rolling seven-day window. Use it to plan ahead with confidence.
+
+---
+
+## Technical Architecture
+
+The platform is engineered on a modern full-stack architecture designed for high performance, type safety, and snappy interface responses.
+
+### Backend Layer
+
+The backend handles the core computational heavy lifting, database state management, and AI-driven background logic.
+
+* **Language:** Python
+* **Framework:** Flask (Application Factory Pattern)
+* **ORM:** SQLAlchemy 2.0 (Modern explicit execution models)
+* **Authentication:** JWT (Secure HTTP-only cookie-based rotation sessions)
+
+### Frontend Layer
+
+The user interface operates as a highly responsive, single-page application (SPA) focused on asynchronous data processing.
+
+* **Core Framework:** React with TypeScript (Type-safe component design)
+* **Styling:** Tailwind CSS (Utility-first responsive layout design)
+* **Network Client:** Axios (Configured for credentials-backed API routing)
+* **State Management:** TanStack Query (Server-state caching and seamless optimistic updates)
+* **Data Visualisation:** Recharts (Dynamic rendering of workload insights and performance history)
+
+### Reminder runner
+
+Reminders are sent by `python -m app.run_reminders` (run from `task-manager-backend/`). It is not started by the web app, so schedule it (cron, Cloud Scheduler or similar) at least every 5 minutes; reminders more than an hour overdue are dropped.
+
+### AI features and data
+
+The Daily Brief, AI quick-add, task breakdown and priority suggestions send task titles, descriptions and project names to the configured AI providers (Google Gemini, with Groq as a fallback). Nothing is sent unless you use those features.
+
+### Product Analytics (PostHog)
+
+The frontend can send anonymous usage events to PostHog. It is off unless configured, and it is cookieless (no cookies or localStorage, no autocapture, no session replay).
+
+* Set `VITE_POSTHOG_PROJECT_TOKEN` (the public project key, never a private key) and optionally `VITE_POSTHOG_HOST` (defaults to the US cloud; use `https://eu.i.posthog.com` for an EU project). These are build-time variables; the Dockerfiles take them as `_VITE_POSTHOG_PROJECT_TOKEN` and `_VITE_POSTHOG_HOST` build args.
+* Signed-in users are identified by user id only. The shared demo account is never identified, and its events carry `is_demo: true`.
+* Task titles, descriptions, search text, emails and names are never sent.
+
+---
+
+## Technology Matrix
+
+| Component | Technology | Primary Purpose |
+| :--- | :--- | :--- |
+| **Backend** | Python / Flask | RESTful API service orchestration |
+| **Database ORM** | SQLAlchemy 2.0 | High-performance relational state mapping |
+| **UI Layer** | React / TypeScript | Type-safe declarative interface building |
+| **Styles** | Tailwind CSS | Consistent, hardware-accelerated design tokens |
+| **Data Fetching** | Axios / TanStack Query | Asynchronous API communication and caching |
+| **Analytics** | Recharts | Interactive charting and productivity telemetry |
+
+---
+
+## Running with Docker
+
+The root `Dockerfile` is the supported build: it builds the frontend and serves it from the Flask app on port 8080. On start it runs the database migrations (`migrate.py`, Alembic) and stops if a required step fails, then starts gunicorn (`WEB_CONCURRENCY`, `GUNICORN_THREADS` and `GUNICORN_TIMEOUT` tune it; `WEB_CONCURRENCY x 15` should stay below the database connection limit).
+
+For local development `docker compose up --build` starts MySQL, Redis and the app on http://localhost:8080 with development-only defaults; export `GEMINI_API_KEY`, `GROQ_API_KEY`, `MAIL_SEND_API_KEY` and `MAIL_SEND_EMAIL` first if you want AI and email features. Compose reads a `.env` file in the repository root if one exists, so keep it to `KEY=value` lines.
+

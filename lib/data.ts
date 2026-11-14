@@ -49,58 +49,76 @@ const data: Project[] = [
     ],
     features: [
       {
+        icon: "Sparkles",
+        title: "AI Trip Generator",
+        description:
+          "Describe where you want to go and what you enjoy in one sentence, and the AI builds a complete itinerary in seconds.",
+      },
+      {
+        icon: "Wand2",
+        title: "AI Trip Editing",
+        description:
+          "Change the plan just by asking, whether that's moving a dinner or adding a day. Every AI change is shown for review before it's applied.",
+      },
+      {
+        icon: "Lightbulb",
+        title: "Smart Planning",
+        description:
+          "Fills empty hours with ideas, fixes timing clashes and drafts packing lists in one step, with every suggestion waiting on approval.",
+      },
+      {
+        icon: "Users",
+        title: "Realtime Collaboration",
+        description:
+          "Everyone in the group sees changes the moment they happen, on every device, so there's no more chasing the latest version through a group chat.",
+      },
+      {
+        icon: "CalendarSync",
+        title: "Google Calendar Sync",
+        description:
+          "Keeps each trip in step with Google Calendar, with changes flowing both ways so the whole group always has the right plan.",
+      },
+      {
+        icon: "Plane",
+        title: "Flight Search",
+        description:
+          "Search for flights without leaving the trip and keep each one beside the itinerary, so arrival times and plans stay lined up.",
+      },
+      {
         icon: "Map",
         title: "Map and Calendar View",
         description:
-          "Shows the schedule and the route together, so you never have to jump between separate apps to work out where you need to be.",
+          "Shows the schedule and the map on one clean screen, so you always know exactly where to be and how to get there.",
       },
       {
-        icon: "Sparkles",
-        title: "AI Day Planner",
+        icon: "Wallet",
+        title: "Budget and Expenses",
         description:
-          "Generates a full day itinerary in seconds from Gemini AI recommendations, based on the trip's location and length.",
+          "Tracks what everyone spends, splits costs and settles up in a few clicks, with no awkward maths and no chasing friends for money.",
       },
       {
-        icon: "Route",
-        title: "AI Route Optimiser",
+        icon: "LayoutTemplate",
+        title: "Trip Templates",
         description:
-          "Reorders stops automatically to cut travel time and avoid clashing bookings.",
+          "Start from a premade destination template and make it your own in seconds, skipping the blank page entirely.",
       },
       {
-        icon: "Heart",
-        title: "Shared Wishlist",
+        icon: "Search",
+        title: "Google Event Search",
         description:
-          "Invite friends to add places they want to visit to a shared wishlist, so every idea lands in one place instead of scattered chat messages.",
-      },
-      {
-        icon: "Vote",
-        title: "Group Voting",
-        description:
-          "Vote on wishlist items so the group can agree on what makes it into the itinerary without a long back and forth.",
+          "Find restaurants, museums and hidden landmarks using Google's database and add the spots you love with a single click.",
       },
       {
         icon: "ShieldCheck",
         title: "Admin and Viewer Roles",
         description:
-          "Organisers get full editing rights while other guests see a read-only itinerary.",
-      },
-      {
-        icon: "Search",
-        title: "Google Places Search",
-        description:
-          "Search restaurants, attractions and landmarks directly inside the app and add them to a day in one click.",
-      },
-      {
-        icon: "Lightbulb",
-        title: "AI Travel Tips",
-        description:
-          "Surfaces local advice for the destination, including the best times to visit and food worth trying.",
+          "Give co-planners full editing rights, or let others follow the plan without altering it, so you stay in control of who changes what.",
       },
       {
         icon: "Download",
-        title: "Calendar Export",
+        title: "Calendar and Word Export",
         description:
-          "Downloads the finished itinerary into Google, Apple or Outlook calendar for offline access.",
+          "Export the finished itinerary as an .ics file for any calendar app, or download the whole trip as a Word document to share.",
       },
     ],
     architecture: `Frontend:
@@ -113,13 +131,17 @@ Backend:
 • Python and Flask, structured with the Application Factory pattern for clean modularity.
 • SQLAlchemy ORM manages the relational data models, foreign keys and transactions.
 • Marshmallow validates incoming requests and formats the JSON responses.
-• Gemini AI powers the itinerary suggestions, route ordering and travel tips.`,
+• Gemini AI powers the itinerary suggestions, route ordering and travel tips.
+• Socket.IO rooms, keyed by trip id, broadcast entity changes to everyone viewing that trip, driven by hooks into the database commit and rollback lifecycle.
+• Google Cloud Tasks runs calendar sync and AI generation as background jobs that call back into an internal endpoint, so a slow external call never holds up the user's request.`,
     challenges: [
       "Migrating to timezone aware datetimes: Event start and end times were originally saved as naive datetimes with no timezone attached. When I added reminder notifications, this meant a trip to Tokyo booked from London would trigger at the wrong local time. I derived a timezone for each trip from its map coordinates, backfilled every existing trip and event, and converted stored times to UTC, interpreting the original values as local to the trip rather than to the user. I built and tested this migration on a separate branch with custom backfill scripts before merging, so active users were never left with incorrect data.",
       "Keeping the map and calendar in sync: The map, the schedule and the list of locations all needed to reflect the same state at once, so adding, moving or deleting an activity in one view had to update the others instantly without re-rendering everything on screen. This took careful state design in Redux rather than letting each view hold its own copy of the data.",
+      "Building realtime collaboration without rewriting every route: every create, update and delete anywhere in the app needed to notify everyone else looking at the same trip, without scattering socket code through dozens of endpoints. I hooked into the database layer instead: whenever a row is created, updated or deleted, its entity name is added to a small change set for that request; a rollback clears the set, so a failed save never announces a change that didn't happen. On a successful commit, the collected entity names are emitted as one event to a Socket.IO room keyed by the trip's id, which everyone viewing that trip has already joined. The frontend maps the entity names in that event to the relevant Redux Toolkit Query cache tags and refetches just the data that changed, rather than the whole page. Google Calendar sync was then built directly on top of this: the same hook also records the ids of the changed entities, and on commit those ids are handed to Google Cloud Tasks, which later calls an internal endpoint that pushes the change out to everyone's synced calendar.",
+      "Moving AI generation out of the request cycle: the first version of the AI itinerary and day-planning features ran inside the HTTP request and saved their output directly, so a slow model call held the request open and the user had no chance to review a change before it landed. I redesigned this around a task object: triggering an AI feature creates a task row and dispatches it to Google Cloud Tasks, which calls an internal endpoint once it's ready to run. That endpoint picks the right handler for the task type, runs it, and updates the task's status as it progresses. The user is notified over the existing Socket.IO connection when it finishes, or by a push notification if they're not currently connected, and the AI's output sits as a proposal the user explicitly approves or discards rather than something applied automatically.",
     ],
     tradeoffs:
-      "I chose Redux Toolkit for state management to avoid prop drilling and make trip data easy to share between the map and calendar components. It added more setup and boilerplate than a lighter library would have, but it made complex state updates predictable and gave the app simple client side caching for free.",
+      "I chose Redux Toolkit for state management to avoid prop drilling and make trip data easy to share between the map and calendar components. It added more setup and boilerplate than a lighter library would have, but it made complex state updates predictable and gave the app simple client side caching for free. For background work such as calendar pushes and AI tasks, I used Google Cloud Tasks rather than a self-hosted queue like Celery and Redis: Cloud Run throttles a container's CPU once it has replied to a request, so a background thread started after the response would stall, while Cloud Tasks makes a fresh HTTP call back into the app that runs at full speed and comes with retries built in. The tradeoff is that local development needs its own simpler stand-in (a background thread) so the job code behaves the same way behind either.",
     impact:
       "Friends and early users have planned several real holidays with it, with no spreadsheets involved. Building it also gave me hands on experience with the wider Google Maps suite, including Places, Directions, Geocoding and Timezone, and with handling geospatial and datetime data correctly.",
     whyBuilt:
@@ -261,40 +283,52 @@ Cloud and async pipeline:
     ],
     features: [
       {
-        icon: "Dumbbell",
-        title: "Custom Routine Builder",
-        description:
-          "Build a personalised programme, order the exercises, and set target weights and reps in advance.",
-      },
-      {
-        icon: "Zap",
-        title: "Fast Live Logging",
-        description:
-          "A clean, one-tap interface for logging sets, weights and rest time with no friction between exercises.",
-      },
-      {
-        icon: "Save",
-        title: "Offline-Resilient Local Storage",
-        description:
-          "Saves an active session to the device as you go, so nothing is lost if the browser closes or crashes mid workout.",
-      },
-      {
         icon: "TrendingUp",
-        title: "Strength Analytics",
+        title: "Smart Progression Suggestions",
         description:
-          "Calculates estimated one-rep max progression and training volume automatically from logged sets.",
+          "After each set, suggests the next weight and rep target based on how the last session went, so progress happens one sensible step at a time.",
+      },
+      {
+        icon: "HeartPulse",
+        title: "Burnout Checker",
+        description:
+          "Spots the warning signs when lifts stall or effort stays high for weeks, and suggests an easier week before it turns into burnout.",
+      },
+      {
+        icon: "BarChart",
+        title: "Performance Stats",
+        description:
+          "Charts show how many hard sets each muscle group gets every week, how recovered it is, and how strength compares to where it was.",
+      },
+      {
+        icon: "Target",
+        title: "Goal-Centred Training",
+        description:
+          "Set a weekly training target, a body weight goal or a lift to chase, and watch progress build from a one-minute onboarding.",
       },
       {
         icon: "Trophy",
-        title: "Achievements",
+        title: "Achievements and Milestones",
         description:
-          "Tracks logging streaks and personal bests per exercise, per user, across weight lifted, reps done, distance covered and time held, and flags a new achievement the moment one is broken.",
+          "Fourteen achievements reward consistency, new personal bests and variety in training, each earned the moment it's unlocked.",
       },
       {
-        icon: "BookOpen",
-        title: "Exercise Library",
+        icon: "Dumbbell",
+        title: "Built for the Gym Floor",
         description:
-          "A searchable catalogue of movements with historical performance logged for each one.",
+          "Warm-ups, drop sets, supersets and rest timers, all in one live workout that survives a page refresh.",
+      },
+      {
+        icon: "Scale",
+        title: "Your Numbers, Your Units",
+        description:
+          "Switch between kilograms and pounds at any time, with history always kept accurate behind the scenes.",
+      },
+      {
+        icon: "LayoutTemplate",
+        title: "Powerful Workout Templates",
+        description:
+          "Pick a ready-made programme, or describe the training you want and let Gains build a routine to review before saving.",
       },
     ],
     architecture: `Frontend:
@@ -348,45 +382,75 @@ Backend:
     features: [
       {
         icon: "CalendarDays",
-        title: "Dual List and Calendar Views",
+        title: "Calendar View",
         description:
-          "Switch between a simple to-do list and a full monthly calendar.",
+          "See the week at a glance and drag tasks onto new days in seconds, so the schedule always matches the plan.",
       },
       {
-        icon: "Repeat",
-        title: "Repeating Habits",
+        icon: "Kanban",
+        title: "Kanban Board",
         description:
-          "Set tasks to repeat daily, weekly or monthly, and skip or reschedule individual occurrences without breaking the pattern.",
+          "Move work from idea to done on a visual board, dragging each task across columns as projects move forward.",
       },
       {
         icon: "Sparkles",
-        title: "AI Morning Brief",
+        title: "Smart Prioritise",
         description:
-          "Reviews pending and overdue items each morning and suggests a sensible, prioritised order for the day.",
+          "Sorts tasks into four priority quadrants with the Eisenhower Matrix, then lets AI suggest changes with a clear reason for each.",
+      },
+      {
+        icon: "Repeat",
+        title: "Seamless Habits",
+        description:
+          "Set tasks to repeat and see what's coming up on the calendar, so recurring commitments are never lost track of.",
+      },
+      {
+        icon: "Bell",
+        title: "Reminders",
+        description:
+          "Get timely push notifications, from half an hour ahead or at a time of your choice, so deadlines are never missed.",
+      },
+      {
+        icon: "Tag",
+        title: "Projects and Labels",
+        description:
+          "Group tasks into projects and tag them with labels, so work, home and everything in between stay in order.",
+      },
+      {
+        icon: "AlarmClock",
+        title: "Snooze",
+        description:
+          "Push a task to tomorrow, the weekend or a chosen date, keeping its time of day for when life gets busy.",
+      },
+      {
+        icon: "FileSpreadsheet",
+        title: "Import and Export",
+        description:
+          "Bring in tasks from a spreadsheet in one go, or export everything to CSV whenever a copy is needed.",
       },
       {
         icon: "ListChecks",
-        title: "AI Task Decomposition",
+        title: "Break It Down",
         description:
-          "Breaks a daunting task into a step-by-step checklist with one click.",
+          "Splits a large task into a checklist by hand or with AI, then ticks off progress one step at a time.",
       },
       {
         icon: "MessageSquareText",
-        title: "Natural Language Quick-Add",
+        title: "Quick Add",
         description:
-          "Type a task naturally, such as 'review proposal tomorrow at 3pm', and the date and priority are filled in automatically.",
+          "Capture an idea in seconds by typing it naturally; the AI fills in the details so nothing slips away.",
       },
       {
         icon: "Timer",
-        title: "Integrated Pomodoro Timer",
+        title: "Pomodoro Timer",
         description:
-          "Runs focused work intervals and logs the time directly against the active task.",
+          "Works in focused sprints and marks a task complete the moment a session ends, for getting more done in less time.",
       },
       {
         icon: "BarChart",
-        title: "Workload Insights",
+        title: "Stats and Planning",
         description:
-          "Interactive charts break down time spent by category each week and show longer-term habit trends.",
+          "The Stats page shows progress over time, from yearly activity to backlog health and where time goes, for planning ahead with confidence.",
       },
     ],
     architecture: `Frontend:
