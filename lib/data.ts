@@ -185,6 +185,18 @@ const data: Project[] = [
         caption:
           "Spending against a budget, with suggested payments to settle up.",
       },
+      {
+        src: "/assets/triptrack-flights.png",
+        alt: "A saved flight showing departure and arrival airports and times, price and a book button.",
+        caption:
+          "Saved flights sit in the trip, with times, price and a link to book.",
+      },
+      {
+        src: "/assets/triptrack-routes.png",
+        alt: "A day's events with a walking route drawn on the map between two of them and step-by-step directions below.",
+        caption:
+          "Routes between events are drawn on the map, with walking or transit directions.",
+      },
     ],
     architecture: {
       diagram: {
@@ -326,7 +338,11 @@ const data: Project[] = [
     },
     limitations: [
       "Some leftover MySQL-era code remains from before the database moved to PostgreSQL and is waiting to be removed.",
-      "Design choices are recorded in plans and an interview guide rather than formal decision records.",
+      "Approving an AI proposal can overwrite newer edits to the fields it changes. A warning is shown, but it does not block acceptance and there is no automatic conflict resolution.",
+      "If an AI provider replies with something that fails validation, the request does not automatically retry with the next provider. Fallback only covers a provider that fails or returns nothing.",
+      "Repayment suggestions use a simple greedy match, so they are not guaranteed to need the fewest transfers, and group balances are held in a single currency (GBP).",
+      "Reminders run from a standalone script rather than inside the web process, so they need a scheduler.",
+      "Tests use fakes for Google, flights and AI, so they cannot show that the live integrations are configured correctly.",
     ],
     impact:
       "Friends and early users have planned several real trips with it. Building it also taught me the wider Google Maps suite (Places, Directions, Geocoding and Time Zone) and how to handle geospatial and datetime data correctly.",
@@ -537,16 +553,6 @@ const data: Project[] = [
           "I tested different sizes and overlaps with LangChain's recursive splitter and settled on 1,500 characters with a 200-character overlap.",
         result:
           "A reasonable default for mixed documents. A header-aware Markdown splitter is written and tested but not yet switched on.",
-      },
-      {
-        title: "A rate limiter that did nothing",
-        problem:
-          "My own security review found that the rate limits were silently ineffective, because of the order the decorators were applied in. I reproduced it before changing anything.",
-        approach:
-          "I made the limits effective, keyed them per signed-in user or visitor, and moved shared limit state to Redis.",
-        result:
-          "The limits now apply. It also showed me that a limit should have a test proving it triggers.",
-        code: [link(FILE, "backend/src/limiter.py")],
       },
     ],
     quality: {
@@ -838,7 +844,11 @@ const data: Project[] = [
         value: "3",
         label: "CI jobs, including browser tests on a real backend",
       },
-      { value: "28", label: "files of written security audit specs" },
+      {
+        value: "Hashed",
+        label:
+          "refresh and MCP tokens, with Redis rate limits and security headers",
+      },
     ],
     features: [
       {
@@ -885,10 +895,9 @@ const data: Project[] = [
         caption: "List view: overdue, today and upcoming, grouped by project.",
       },
       {
-        src: "/assets/taskflow-calendar.png",
-        alt: "A month calendar with tasks and repeating tasks on each day.",
-        caption:
-          "Calendar view, including repeating tasks calculated ahead of time.",
+        src: "/assets/taskflow-board.png",
+        alt: "A kanban board with To Do, In Progress and Done columns, each card tagged with its project.",
+        caption: "Board view: each project gets its own columns.",
       },
       {
         src: "/assets/taskflow-matrix.png",
@@ -897,14 +906,35 @@ const data: Project[] = [
           "Eisenhower matrix: drag a task between quadrants to change its priority.",
       },
       {
+        src: "/assets/taskflow-week.png",
+        alt: "A week calendar with tasks coloured by project across seven days.",
+        caption: "Week view on a busy week, with tasks coloured by project.",
+      },
+      {
+        src: "/assets/taskflow-day.png",
+        alt: "A day calendar with six tasks in different project colours.",
+        caption: "Day view on a busy day.",
+      },
+      {
         src: "/assets/taskflow-brief.png",
         alt: "A daily brief summarising today's priorities and overdue work.",
         caption: "The AI daily brief, written from your own tasks.",
       },
       {
-        src: "/assets/taskflow-stats.png",
-        alt: "A statistics dashboard with completion rate, streak and an activity heatmap.",
-        caption: "Statistics: completion rate, streak and a year of activity.",
+        src: "/assets/taskflow-add-task.png",
+        alt: "The add task form with title, project, priority, schedule, reminders and repeat settings.",
+        caption: "Adding a task, with schedule, reminders and repeats.",
+      },
+      {
+        src: "/assets/taskflow-stats-1.png",
+        alt: "A statistics dashboard with completion rate, streak, an activity heatmap and deadline charts.",
+        caption:
+          "Statistics: completion rate, streak, a year of activity and upcoming deadlines.",
+      },
+      {
+        src: "/assets/taskflow-stats-2.png",
+        alt: "Statistics charts for project breakdown, weekly flow, turnaround time and estimation accuracy.",
+        caption: "Statistics: where time goes and how accurate estimates are.",
       },
     ],
     architecture: {
@@ -1045,8 +1075,9 @@ const data: Project[] = [
       other: [
         "14 Alembic migrations with round-trip tests.",
         "Cross-user isolation tests for the API and the MCP server.",
+        "Refresh tokens are stored hashed and rotate with a short grace window, so two tabs refreshing at once do not sign the user out.",
         "About 15 rate limits on Redis plus a daily AI quota per user, and security headers including a report-only content security policy.",
-        "A written security audit with a spec for each finding. Several are already fixed, including hashed tokens, the refresh grace window, Redis rate limits and the security headers.",
+        "MCP tokens are scoped to read or write, stored hashed and rate limited per token.",
       ],
     },
     limitations: [
