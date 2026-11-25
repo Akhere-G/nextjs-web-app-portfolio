@@ -4,149 +4,333 @@ export interface ProjectFeature {
   description: string;
 }
 
+export interface CodeLink {
+  label: string;
+  href: string;
+}
+
+export interface ProofItem {
+  value: string;
+  label: string;
+}
+
+export interface Decision {
+  title: string;
+  why: string;
+  tradeoff: string;
+  detail?: string;
+  code?: CodeLink[];
+}
+
+export interface Challenge {
+  title: string;
+  problem: string;
+  approach: string;
+  result: string;
+  code?: CodeLink[];
+}
+
+export interface ArchitectureLayer {
+  name: string;
+  points: string[];
+}
+
+export interface Screenshot {
+  src: string;
+  alt: string;
+  caption: string;
+}
+
+export interface ArchitectureDiagram {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+
 export interface Project {
   title: string;
   slug: string;
+  tier: "featured" | "earlier";
   url: string;
   img: string;
-  desc: string;
   pitch: string;
-  coreProblem: string;
+  problem: string;
   github: string[];
   technologies: string[];
-  features?: ProjectFeature[];
-  architecture?: string;
-  databaseSchemaSrc?: { url: string; width: number; height: number };
-  challenges?: string[];
-  tradeoffs?: string;
+  proof?: ProofItem[];
+  features: ProjectFeature[];
+  screenshots?: Screenshot[];
+  architecture?: { diagram?: ArchitectureDiagram; layers: ArchitectureLayer[] };
+  decisions?: Decision[];
+  challenges?: Challenge[];
+  quality?: { tests: string; ci: string; other: string[] };
+  limitations?: string[];
   impact?: string;
-  whyBuilt?: string;
+  docs?: CodeLink[];
+  databaseSchemaSrc?: { url: string; width: number; height: number };
 }
+
+const GITHUB = "https://github.com/Akhere-G";
+
+const link = (repo: string, path: string, label?: string): CodeLink => ({
+  label: label ?? path.split("/").slice(-1)[0],
+  href: `${GITHUB}/${repo}/blob/main/${path}`,
+});
+
+const TRIP = "event-planner";
+const TRIP_BE = "event-planner-app-backend";
+const TASK = "task-manager";
+const TASK_BE = "task-manager-backend";
+const FILE = "file-query";
+const GAINS = "exercise-tracker";
 
 const data: Project[] = [
   {
     title: "TripTrack",
     slug: "trip-track",
+    tier: "featured",
     url: "https://app.triptrack.uk/demo",
     img: "/assets/tripTrackPage.png",
-    desc: "TripTrack is a collaborative holiday planning app that puts a shared map, calendar and AI itinerary tools in one place. Groups can generate daily schedules with AI, optimise routes to cut travel time, and build a shared wishlist of places to visit, voting on which ones make the final itinerary. Search venues with Google Places and export the finished plan to any calendar app.",
     pitch:
-      "Built to replace messy spreadsheets and scattered browser tabs with one shared workspace for planning a trip as a group, complete with route optimisation, group voting and AI generated itineraries.",
-    coreProblem:
-      "Planning a holiday with friends usually means juggling spreadsheets, pinned map links and endless WhatsApp messages, with no clear way to agree on what actually makes the cut. TripTrack brings the schedule, the map and a shared wishlist into one place, so the group can propose places and vote on them instead of arguing it out over chat.",
-    github: ["https://github.com/Akhere-G/event-planner"],
+      "A shared trip planner where a group builds one itinerary on a map and calendar, with AI suggestions that never change the plan until someone approves them.",
+    problem:
+      "Planning a holiday with friends usually means spreadsheets, pinned map links and endless group chats, with no clear way to agree on what makes the cut. TripTrack puts the schedule, the map, the budget and the group in one place, updates everyone's screen as soon as a change is saved, and lets AI draft or change plans without ever applying anything until a person approves it.",
+    github: [`${GITHUB}/${TRIP}`],
     technologies: [
       "React",
       "TypeScript",
-      "Google Maps API",
-      "Gemini AI",
       "Redux Toolkit",
-      "Yup",
+      "RTK Query",
+      "Google Maps API",
       "Python",
       "Flask",
       "SQLAlchemy",
+      "PostgreSQL",
+      "Socket.IO",
+      "Redis",
+      "Google Cloud Tasks",
+      "Gemini AI",
       "Marshmallow",
+    ],
+    proof: [
+      { value: "1,200+", label: "automated backend tests" },
+      { value: "40", label: "database migrations" },
+      { value: "3", label: "AI providers with automatic fallback" },
+      {
+        value: "CI",
+        label: "backend, frontend and browser tests on every push",
+      },
     ],
     features: [
       {
         icon: "Sparkles",
-        title: "AI Trip Generator",
+        title: "AI Trips With Approval",
         description:
-          "Describe where you want to go and what you enjoy in one sentence, and the AI builds a complete itinerary in seconds.",
-      },
-      {
-        icon: "Wand2",
-        title: "AI Trip Editing",
-        description:
-          "Change the plan just by asking, whether that's moving a dinner or adding a day. Every AI change is shown for review before it's applied.",
-      },
-      {
-        icon: "Lightbulb",
-        title: "Smart Planning",
-        description:
-          "Fills empty hours with ideas, fixes timing clashes and drafts packing lists in one step, with every suggestion waiting on approval.",
+          "Describe a trip in one sentence, or ask for a change such as moving a dinner. Every AI result is shown as a suggestion to review before anything is saved.",
       },
       {
         icon: "Users",
         title: "Realtime Collaboration",
         description:
-          "Everyone in the group sees changes the moment they happen, on every device, so there's no more chasing the latest version through a group chat.",
+          "Everyone viewing a trip sees changes the moment they are saved, on every device, so nobody is chasing the latest version through a group chat.",
       },
       {
         icon: "CalendarSync",
         title: "Google Calendar Sync",
         description:
-          "Keeps each trip in step with Google Calendar, with changes flowing both ways so the whole group always has the right plan.",
-      },
-      {
-        icon: "Plane",
-        title: "Flight Search",
-        description:
-          "Search for flights without leaving the trip and keep each one beside the itinerary, so arrival times and plans stay lined up.",
+          "Keeps each trip in step with Google Calendar, with changes flowing both ways, so the whole group has the right plan in their own calendar.",
       },
       {
         icon: "Map",
         title: "Map and Calendar View",
         description:
-          "Shows the schedule and the map on one clean screen, so you always know exactly where to be and how to get there.",
+          "Shows the schedule and the map on one screen, with routes and place details from Google Maps.",
       },
       {
         icon: "Wallet",
         title: "Budget and Expenses",
         description:
-          "Tracks what everyone spends, splits costs and settles up in a few clicks, with no awkward maths and no chasing friends for money.",
-      },
-      {
-        icon: "LayoutTemplate",
-        title: "Trip Templates",
-        description:
-          "Start from a premade destination template and make it your own in seconds, skipping the blank page entirely.",
-      },
-      {
-        icon: "Search",
-        title: "Google Event Search",
-        description:
-          "Find restaurants, museums and hidden landmarks using Google's database and add the spots you love with a single click.",
+          "Tracks what everyone spends and splits costs between the group. Flights, templates and Word or calendar export sit alongside it.",
       },
       {
         icon: "ShieldCheck",
         title: "Admin and Viewer Roles",
         description:
-          "Give co-planners full editing rights, or let others follow the plan without altering it, so you stay in control of who changes what.",
+          "Give co-planners full editing rights, or let others follow the plan without being able to change it.",
+      },
+    ],
+    screenshots: [
+      {
+        src: "/assets/triptrack-calendar.png",
+        alt: "A month calendar of a Lisbon trip beside a map of the planned places.",
+        caption:
+          "The trip schedule as a calendar, next to its places on the map.",
       },
       {
-        icon: "Download",
-        title: "Calendar and Word Export",
-        description:
-          "Export the finished itinerary as an .ics file for any calendar app, or download the whole trip as a Word document to share.",
+        src: "/assets/triptrack-ai-proposals.png",
+        alt: "A dialog titled Review proposed changes listing four suggested events, each with a checkbox, and buttons to reject all or apply the selected changes.",
+        caption:
+          "AI suggestions are reviewed first and only apply once you approve them.",
+      },
+      {
+        src: "/assets/triptrack-day-optimiser.png",
+        alt: "A dialog titled Optimise your days where the user picks which days to improve and priorities such as minimising travel.",
+        caption:
+          "The day optimiser asks what to improve, then proposes changes to review.",
+      },
+      {
+        src: "/assets/triptrack-expenses.png",
+        alt: "A budget with spending by category, the group's balances, and suggested payments to settle up.",
+        caption:
+          "Spending against a budget, with suggested payments to settle up.",
       },
     ],
-    architecture: `Frontend:
-• Built with React and TypeScript as a single page application.
-• Redux Toolkit manages trip data globally so the map and calendar views stay in sync and update together.
-• Yup validates forms before anything is sent to the API.
-• Google Maps API renders the interactive map, routes and place details.
-
-Backend:
-• Python and Flask, structured with the Application Factory pattern for clean modularity.
-• SQLAlchemy ORM manages the relational data models, foreign keys and transactions.
-• Marshmallow validates incoming requests and formats the JSON responses.
-• Gemini AI powers the itinerary suggestions, route ordering and travel tips.
-• A chat-style "room" per trip tells everyone viewing it about a change the moment it's saved, so every screen stays in sync automatically.
-• Calendar sync and AI generation run as background jobs that call back into the app once they're done, so a slow outside call never makes the user wait.`,
-    challenges: [
-      "Migrating to timezone aware datetimes: Event start and end times were originally saved as naive datetimes with no timezone attached. When I added reminder notifications, this meant a trip to Tokyo booked from London would trigger at the wrong local time. I derived a timezone for each trip from its map coordinates, backfilled every existing trip and event, and converted stored times to UTC, interpreting the original values as local to the trip rather than to the user. I built and tested this migration on a separate branch with custom backfill scripts before merging, so active users were never left with incorrect data.",
-      "Keeping the map and calendar in sync: The map, the schedule and the list of locations all needed to reflect the same state at once, so adding, moving or deleting an activity in one view had to update the others instantly without re-rendering everything on screen. This took careful state design in Redux rather than letting each view hold its own copy of the data.",
-      "Keeping everyone's screen in sync without rewriting every feature: whenever someone adds, edits or deletes something, everyone else looking at that trip needs to see it instantly, without me adding sync code to every single feature by hand. I built one shared hook into the database save step instead: it quietly notes what just changed, and only announces it once the save has definitely gone through (if the save fails, nothing is announced). Everyone viewing a trip joins a chat-style \"room\" for it, so the announcement reaches only the people who need it, and the screen refreshes just the part that changed. Google Calendar sync was built on the exact same hook: it also notes which items changed, and those are queued up afterwards to be pushed into everyone's Google Calendar.",
-      "Taking AI generation out of the user's wait: the first version of the AI planning features ran while the user waited for the request to finish, and saved the result straight away with no chance to check it first. I changed this so starting an AI feature just creates a background job, which is picked up and run separately a moment later. While it runs, its progress is tracked, and the user is told the moment it's done, either instantly if they're still on the page, or with a push notification if they've moved on. The AI's result is then shown as a suggestion to approve, rather than something that's already been saved.",
+    architecture: {
+      diagram: {
+        src: "/assets/triptrack-architecture.svg",
+        alt: "How TripTrack fits together: the browser talks to a Flask API, a change tracker on the database triggers realtime notices and background jobs, and jobs call Google Calendar and AI providers.",
+        width: 1000,
+        height: 440,
+      },
+      layers: [
+        {
+          name: "Frontend",
+          points: [
+            "React and TypeScript single page app built with Vite.",
+            "Server data lives in one RTK Query cache. When the server announces a change, only the affected cached data is refreshed, so the map, calendar and list always agree.",
+            "Redux slices hold only interface and sign-in state.",
+            "Google Maps renders the map, routes and place details.",
+          ],
+        },
+        {
+          name: "Backend",
+          points: [
+            "Python and Flask using the application factory pattern: about 100 routes across 20 blueprints.",
+            "Marshmallow validates every request. SQLAlchemy and Alembic manage 24 tables on PostgreSQL.",
+            "Socket.IO rooms (one per trip and per user) deliver live updates, with Redis shared between server instances.",
+          ],
+        },
+        {
+          name: "Background work and AI",
+          points: [
+            "Google Cloud Tasks runs calendar syncing and AI generation outside the request, calling back into the app with signed requests that are verified.",
+            "Gemini, Groq and AWS Bedrock sit behind adapters, and the app falls back to the next provider if one fails.",
+            "Web push notifications tell users when a background job has finished.",
+          ],
+        },
+        {
+          name: "Delivery",
+          points: [
+            "Docker images for each service, a GitHub Actions pipeline, deployed on Google Cloud Run.",
+          ],
+        },
+      ],
+    },
+    decisions: [
+      {
+        title: "One save hook powers live updates and calendar sync",
+        why: "Instead of writing sync code for every feature, one listener watches the database save step, notes what changed, and announces it only once the save has definitely gone through. A failed save announces nothing.",
+        tradeoff:
+          "Behaviour that happens automatically is harder for a newcomer to trace, and every new table has to be registered with a rule for who should be told about it.",
+        detail:
+          "A SQLAlchemy listener collects changes after each flush, emits them only after the commit succeeds, and discards them on rollback. Thirteen models are registered, each with a resolver that finds the trip and users to notify. Calendar sync is a second listener on the same tracker that queues a push job for the changed items.",
+        code: [
+          link(TRIP, `${TRIP_BE}/src/realtime/change_tracker.py`),
+          link(TRIP, `${TRIP_BE}/src/calendar_sync/change_listener.py`),
+        ],
+      },
+      {
+        title: "Use a managed task queue for slow work",
+        why: "Calendar updates and AI calls take seconds. The hosting platform slows a server right down once it has replied to a request, so a job started in a thread would stall. Google's managed queue makes a fresh request back into the app, which runs at full speed and is retried automatically if it fails.",
+        tradeoff:
+          "Local development needs a stand-in for the queue, so the same job code runs either way, and the app depends on a Google service rather than software I run myself.",
+        detail:
+          "A dispatcher factory picks Cloud Tasks, a thread or an inline call. Task names are deterministic so a duplicate is ignored, callbacks are verified by checking Google's signed token, and each run is claimed atomically with an attempt limit.",
+        code: [
+          link(TRIP, `${TRIP_BE}/src/ai_tasks/dispatchers`, "dispatchers"),
+          link(TRIP, `${TRIP_BE}/src/middleware/cloud_tasks_auth.py`),
+          link(TRIP, `${TRIP_BE}/src/ai_tasks/runner.py`),
+        ],
+      },
+      {
+        title: "AI proposes, people approve, and stale proposals are flagged",
+        why: "An AI reply can take a while, and the plan may change in the meantime. So the result is a suggestion, not a saved change, and anything edited or deleted since the request started is flagged before the user applies it.",
+        tradeoff:
+          "Every AI feature needs an extra review step and a stored snapshot, which is more work than saving the result straight away.",
+        detail:
+          "A snapshot is taken before the slow call. Each entity type has a validator that checks the model's output, and registered appliers apply an approved change set. Anything that has changed or disappeared is marked CHANGED or DELETED in the preview.",
+        code: [
+          link(TRIP, `${TRIP_BE}/src/ai_tasks/snapshots.py`),
+          link(TRIP, `${TRIP_BE}/src/services/change_set_appliers.py`),
+        ],
+      },
+      {
+        title: "Do not depend on a single AI provider",
+        why: "A rate limit or outage at one provider should not switch off trip planning.",
+        tradeoff:
+          "Prompts have to work across different models, and each provider adds an adapter to maintain and test.",
+        detail:
+          "Gemini, Groq and AWS Bedrock adapters share one interface, and a request falls through to the next provider in order. AI endpoints have per-user rate limits by task type.",
+        code: [
+          link(TRIP, `${TRIP_BE}/src/services/ai_providers`, "ai_providers"),
+        ],
+      },
+      {
+        title: "One cache for server data, refreshed by the server",
+        why: "The map, the calendar and the location list all show the same trips and events. Keeping one cached copy and refreshing it when the server says something changed means they cannot drift apart.",
+        tradeoff:
+          "Redux Toolkit adds more setup and boilerplate than a lighter library would, in return for predictable updates and caching without extra code.",
+        detail:
+          "RTK Query defines about 86 endpoints with cache tags. A socket notice invalidates the tags for the changed trip, and only the affected queries refetch.",
+        code: [
+          link(TRIP, "event-planner-app-frontend/src/features/api/apiSlice.ts"),
+        ],
+      },
     ],
-    tradeoffs: `I chose Redux Toolkit for state management to avoid prop drilling and make trip data easy to share between the map and calendar components. It added more setup and boilerplate than a lighter library would have, but it made complex state updates predictable and gave the app simple client side caching for free.
-
-For background work like calendar updates and AI tasks, I used Google's managed task queue instead of running my own (such as Celery and Redis). The hosting platform slows a server right down as soon as it replies to a request, so a background job started that way would stall; the managed queue instead makes a brand new request back into the app, which runs at full speed and automatically retries if something fails. The downside is that local development needs a simple stand-in for it, so the same job code works the same way whether it's running for real or on my laptop.`,
+    challenges: [
+      {
+        title: "Fixing time zones after launch",
+        problem:
+          "Event times were first saved with no time zone attached. When I added reminder notifications, a trip to Tokyo booked from London would have fired at the wrong local time.",
+        approach:
+          "I worked out a time zone for each trip from its map coordinates, backfilled every existing trip and event, and converted stored times to UTC by reading the old values as local to the trip, not to the user. The frontend converts in both directions using the trip's zone. I built and tested the migration on a separate branch with custom backfill scripts and only merged once the data and the frontend were both ready.",
+        result:
+          "Reminders fire at the right local time, and users with existing trips never saw incorrect data.",
+        code: [
+          link(TRIP, `${TRIP_BE}/scripts/backfill_trip_timezones.py`),
+          link(TRIP, `${TRIP_BE}/scripts/convert_to_timezone_aware.py`),
+        ],
+      },
+      {
+        title: "Taking AI out of the user's wait",
+        problem:
+          "The first version ran AI planning while the user waited for the request to finish, and saved the result straight away with no chance to check it.",
+        approach:
+          "Starting an AI feature now creates a background job that is picked up a moment later. Its progress is tracked and the user is told when it is done, instantly if they are still on the page or by push notification if they have moved on.",
+        result:
+          "Slow AI calls no longer block a request, and the result arrives as a suggestion to approve instead of something already saved.",
+        code: [link(TRIP, `${TRIP_BE}/src/ai_tasks/runner.py`)],
+      },
+    ],
+    quality: {
+      tests:
+        "About 1,230 backend tests across 96 files, about 250 frontend unit tests and 24 Playwright browser tests.",
+      ci: "GitHub Actions runs the backend tests, then frontend lint, build and unit tests, then the browser tests on every push and pull request.",
+      other: [
+        "40 Alembic migrations, including backfill scripts with their own tests.",
+        "Google refresh tokens are encrypted at rest.",
+        "Rate limits on AI and flight-search endpoints.",
+        "Written security, maintainability and performance audits (kept in my private planning notes).",
+      ],
+    },
+    limitations: [
+      "Some leftover MySQL-era code remains from before the database moved to PostgreSQL and is waiting to be removed.",
+      "Design choices are recorded in plans and an interview guide rather than formal decision records.",
+    ],
     impact:
-      "Friends and early users have planned several real holidays with it, with no spreadsheets involved. Building it also gave me hands on experience with the wider Google Maps suite, including Places, Directions, Geocoding and Timezone, and with handling geospatial and datetime data correctly.",
-    whyBuilt:
-      "I built TripTrack because planning a trip with a group was genuinely frustrating with the tools I had. I wanted one place that handled the mapping, the scheduling and the group coordination properly, rather than stitching them together by hand.",
+      "Friends and early users have planned several real trips with it. Building it also taught me the wider Google Maps suite (Places, Directions, Geocoding and Time Zone) and how to handle geospatial and datetime data correctly.",
+    docs: [link(TRIP, ".github/workflows/ci.yml", "CI workflow")],
     databaseSchemaSrc: {
       url: "/assets/triptrack_schema.svg",
       width: 1200,
@@ -156,104 +340,237 @@ For background work like calendar updates and AI tasks, I used Google's managed 
   {
     title: "FileQuery",
     slug: "file-query",
+    tier: "featured",
     url: "https://file-query-frontend-752853711822.europe-west1.run.app/demo",
     img: "/assets/fileQueryPage.png",
-    desc: "FileQuery is a full-stack document search and question answering platform built around Retrieval-Augmented Generation (RAG). Users upload documents into project folders and ask questions that are answered strictly from their own files, with the system extracting text, chunking it intelligently and combining keyword and semantic search to find the right passage before generating an answer with citations.",
     pitch:
-      "A document question-answering tool that uses a production style RAG pipeline to give accurate answers grounded strictly in your own files, with no hallucinated content.",
-    coreProblem:
-      "General models like ChatGPT will answer confidently from training data, or simply make something up, and they cannot read private files at all. FileQuery solves this by letting users upload their own documents, indexing them with vector search, and constraining the model to answer only from the retrieved content.",
-    github: ["https://github.com/Akhere-G/file-query"],
+      "Ask questions about your own documents and get answers drawn only from them, with the sources shown.",
+    problem:
+      "General chatbots answer confidently from their training data, or make something up, and they cannot read private files at all. FileQuery lets people upload their own documents into project folders, finds the passages most likely to answer a question, and tells the model to answer only from those passages. I built it to work through a real cloud RAG pipeline end to end, rather than just calling an AI API.",
+    github: [`${GITHUB}/${FILE}`],
     technologies: [
-      "FastAPI",
-      "pgvector",
-      "LangChain",
-      "AWS Lambda",
       "Next.js",
       "TypeScript",
       "Tailwind CSS",
+      "FastAPI",
       "Python 3.14",
       "SQLAlchemy 2.0",
       "PostgreSQL",
+      "pgvector",
+      "LangChain",
       "AWS S3",
       "AWS SQS",
-      "Amazon Titan Text Embeddings V2",
+      "AWS Lambda",
+      "Amazon Titan Embeddings V2",
+      "Cohere Rerank 3.5",
       "Amazon Nova Micro",
       "Google Cloud Run",
+    ],
+    proof: [
+      { value: "320+", label: "automated backend tests" },
+      { value: "4", label: "retrieval stages: vector, keyword, fuse, rerank" },
+      {
+        value: "14",
+        label: "question evaluation set for the retrieval pipeline",
+      },
+      { value: "20", label: "findings in a written self-audit" },
     ],
     features: [
       {
         icon: "FolderOpen",
         title: "Project Knowledge Bases",
         description:
-          "Groups documents into separate project workspaces, so a query only searches the files relevant to it.",
+          "Groups documents into separate project workspaces, so a question only searches the files that belong to it.",
       },
       {
         icon: "FileText",
         title: "Multi-Format Ingestion",
         description:
-          "Extracts content from PDF, DOC, DOCX, CSV, Markdown and TXT files on upload.",
-      },
-      {
-        icon: "Scissors",
-        title: "Smart Document Chunking",
-        description:
-          "Uses LangChain's recursive splitter to break text up naturally, keeping headings and tables intact rather than cutting across them.",
+          "Extracts text from PDF, DOC, DOCX, CSV, Markdown and TXT files as they are uploaded.",
       },
       {
         icon: "SearchCode",
-        title: "Hybrid Semantic and Keyword Search",
+        title: "Hybrid Search With Reranking",
         description:
-          "Combines keyword matching with pgvector embeddings to find the document sections most likely to answer the question.",
+          "Combines meaning-based and keyword search, then reranks the best candidates, so both paraphrases and exact terms are found.",
       },
       {
         icon: "MessageSquareText",
-        title: "Query Rewriting",
+        title: "Follow-Up Questions",
         description:
-          "Turns a follow-up question such as 'what about the second option' into a clear, standalone search query before retrieval.",
+          "Turns a follow-up such as 'what about the second option' into a standalone search before retrieval.",
       },
       {
         icon: "ShieldCheck",
-        title: "Grounded AI Answers",
+        title: "Answers From Your Files",
         description:
-          "Amazon Nova Micro is prompted to answer only from the retrieved text, which keeps hallucinations out of the response.",
+          "The model is instructed to answer only from the retrieved passages, and answers show the sources they were drawn from.",
       },
       {
         icon: "Zap",
-        title: "Background File Processing",
+        title: "Background Processing",
         description:
-          "Uploaded files are processed asynchronously through AWS SQS and Lambda, so the app stays responsive while a document is indexed.",
+          "Uploaded files are processed through a queue and a worker, so the app stays responsive while a document is indexed.",
+      },
+    ],
+    screenshots: [
+      {
+        src: "/assets/filequery-files.png",
+        alt: "A project's files tab listing four uploaded Markdown files above an upload area.",
+        caption:
+          "Files are grouped into projects, and each project searches only its own files.",
       },
       {
-        icon: "Link2",
-        title: "Source Citations",
-        description:
-          "Every answer links back to the exact snippets it was drawn from, so the user can check the source in seconds.",
+        src: "/assets/filequery-chat.png",
+        alt: "A chat where an answer is followed by chips for each source passage it used.",
+        caption: "Answers list the passages they were based on.",
+      },
+      {
+        src: "/assets/filequery-source.png",
+        alt: "A dialog showing the source file name and the exact cited text.",
+        caption: "Open a source to see the file and the exact passage.",
       },
     ],
-    architecture: `Frontend:
-• Next.js with TypeScript and Tailwind CSS for the interface.
-• Server Actions and secure HTTP only cookies handle authenticated calls to the API.
-
-Backend and vector search:
-• Python 3.14 with FastAPI providing documented RESTful endpoints.
-• PostgreSQL with the pgvector extension for fast semantic similarity search.
-• SQLAlchemy 2.0 for querying the relational data.
-
-Cloud and async pipeline:
-• Files upload directly to Amazon S3.
-• An SQS queue triggers a Lambda worker that extracts text, chunks it with LangChain and generates embeddings with Amazon Titan Text Embeddings V2.
-• When a user asks a question, FastAPI rewrites the prompt, retrieves the best matching chunks from pgvector and calls Amazon Nova Micro to generate the answer. The whole backend runs on Google Cloud Run.`,
-    challenges: [
-      "Finding the right chunking strategy: Chunks that are too small lose surrounding context, and chunks that are too large dilute search accuracy. I tested different chunk sizes and overlaps using LangChain's recursive markdown splitter, which preserves document headings and table structure rather than splitting across them.",
-      "Tuning retrieval quality: Plain vector search occasionally missed specific terms or returned weak matches. I improved this by adding conversational query rewriting, hybrid search that combines exact keyword matching with vector similarity, and a reranking step over the candidates, then validated the change by running a set of test questions through the pipeline and checking which chunks were retrieved and their similarity scores.",
+    architecture: {
+      diagram: {
+        src: "/assets/filequery-architecture.svg",
+        alt: "How FileQuery fits together: files go from the browser straight to S3, a queue and Lambda worker embed them into PostgreSQL, and questions are answered through search, reranking and Bedrock models.",
+        width: 1000,
+        height: 520,
+      },
+      layers: [
+        {
+          name: "Frontend",
+          points: [
+            "Next.js with TypeScript and Tailwind CSS.",
+            "Server Actions call the API with the sign-in token held in an HTTP-only cookie.",
+          ],
+        },
+        {
+          name: "API and database",
+          points: [
+            "FastAPI with 17 documented endpoints, SQLAlchemy 2.0 and 13 Alembic migrations.",
+            "PostgreSQL with pgvector for meaning-based search and built-in full-text search for keywords.",
+            "Rate limits keyed per user on Redis, monthly message caps, and a read-only public demo mode.",
+          ],
+        },
+        {
+          name: "Ingestion pipeline",
+          points: [
+            "The browser uploads straight to S3, then the API confirms the upload and puts a job on an SQS queue.",
+            "A Lambda worker extracts text, splits it into chunks with LangChain and creates embeddings with Amazon Titan Text Embeddings V2.",
+          ],
+        },
+        {
+          name: "Answering a question",
+          points: [
+            "The question is rewritten into a standalone search, then run against pgvector and full-text search.",
+            "The two result lists are merged with reciprocal rank fusion, reranked by Cohere Rerank 3.5, and the top five passages go to Amazon Nova Micro to write the answer.",
+            "The services run on Google Cloud Run and the worker image is built and pushed to AWS from GitHub Actions.",
+          ],
+        },
+      ],
+    },
+    decisions: [
+      {
+        title: "Combine keyword and meaning-based search, then rerank",
+        why: "Searching by meaning misses exact terms such as part numbers, and keyword search misses paraphrases. Running both, merging the results and reranking the best candidates finds the right passage more often than either alone.",
+        tradeoff:
+          "Every question makes an extra model call for reranking, which adds latency and cost, and there are more settings to tune.",
+        detail:
+          "pgvector cosine search with a 0.14 similarity threshold returns 20 candidates, Postgres full-text search (with a GIN index) returns its own list, reciprocal rank fusion merges them with k=60, and Cohere Rerank 3.5 on Bedrock keeps the top 5.",
+        code: [
+          link(FILE, "backend/src/features/chat/chat_service.py"),
+          link(FILE, "backend/src/features/files/embedding_service.py"),
+        ],
+      },
+      {
+        title: "Process uploads with managed queues and workers",
+        why: "Extracting and embedding a long document takes a while. A managed queue and a worker keep that out of the web request, and I never have to run or patch the queue myself.",
+        tradeoff:
+          "Cost can grow faster than a self-run queue at high volume, which I accepted because this is a portfolio project, not a production system at scale.",
+        detail:
+          "SQS triggers a Lambda container image. The image is built in stages and compiles antiword from source so old .doc files can be read.",
+        code: [link(FILE, "backend/embedding_worker.Dockerfile")],
+      },
+      {
+        title: "Lock down uploads before they reach the server",
+        why: "Files go straight from the browser to S3, so the server never handles the file itself, but the upload link has to limit what can be sent.",
+        tradeoff:
+          "The client must declare the file type and size up front, and the extra confirm step adds one more request.",
+        detail:
+          "The presigned upload is pinned to the declared content type and an exact size range, the API checks the stored object with head_object before queuing it, and per-user storage quotas apply.",
+        code: [link(FILE, "backend/src/features/files/file_service.py")],
+      },
+      {
+        title: "Stay inside AWS for models",
+        why: "I already used S3 and SQS, so Titan embeddings and Nova Micro kept the services, billing and sign-in in one place and kept running costs down.",
+        tradeoff:
+          "Less choice of model than a provider-agnostic setup, and the app is split across two clouds, with the frontend and API on Google Cloud Run and storage and models on AWS.",
+      },
+      {
+        title: "Test the pipeline without the cloud",
+        why: "Deterministic fakes for Bedrock, S3 and SQS let the whole upload, chunk, embed and retrieve flow run in ordinary tests, quickly and for free.",
+        tradeoff:
+          "The fakes prove the pipeline is wired correctly, but they do not measure how good a real model's answers are.",
+        detail:
+          "A 14-case evaluation set (10 answerable and 4 unanswerable questions) runs through the real upload, extract, chunk and embed code and checks the expected source, evidence and refusal. Known bugs are recorded as strict expected failures so they cannot be forgotten.",
+        code: [link(FILE, "backend/tests/test_rag_eval.py")],
+      },
     ],
-    tradeoffs:
-      "I chose Amazon Titan Embeddings and Amazon Nova Micro over OpenAI mainly to stay inside the AWS ecosystem I was already using for S3 and SQS, and to keep running costs down. I also used fully managed AWS SQS and Lambda for background processing instead of running a self-hosted Celery and Redis cluster, so I never had to maintain that infrastructure myself. The downside is that cost can grow faster than with a self-hosted queue at high volume, which I accepted because this is a portfolio project rather than a production system running at scale.",
+    challenges: [
+      {
+        title: "Making retrieval good enough to trust",
+        problem:
+          "Plain vector search sometimes missed specific terms or returned weak matches.",
+        approach:
+          "I added query rewriting for follow-up questions, hybrid keyword and vector search, and a reranking step. I checked each change by running a set of test questions and looking at which chunks came back and their similarity scores, then turned that set into the evaluation tests.",
+        result:
+          "Questions about specific terms now find the right passage, and the evaluation set guards against regressions.",
+        code: [link(FILE, "backend/tests/test_rag_eval.py")],
+      },
+      {
+        title: "Choosing chunk sizes",
+        problem:
+          "Chunks that are too small lose surrounding context, and chunks that are too large dilute the match.",
+        approach:
+          "I tested different sizes and overlaps with LangChain's recursive splitter and settled on 1,500 characters with a 200-character overlap.",
+        result:
+          "A reasonable default for mixed documents. A header-aware Markdown splitter is written and tested but not yet switched on.",
+      },
+      {
+        title: "A rate limiter that did nothing",
+        problem:
+          "My own security review found that the rate limits were silently ineffective, because of the order the decorators were applied in. I reproduced it before changing anything.",
+        approach:
+          "I made the limits effective, keyed them per signed-in user or visitor, and moved shared limit state to Redis.",
+        result:
+          "The limits now apply. It also showed me that a limit should have a test proving it triggers.",
+        code: [link(FILE, "backend/src/limiter.py")],
+      },
+    ],
+    quality: {
+      tests:
+        "About 325 backend tests across 26 files, about 190 frontend tests and 13 Playwright browser tests.",
+      ci: "GitHub Actions runs backend tests against a real pgvector database, ruff, pip-audit, ESLint, type checks, Vitest, npm audit, a build and the Playwright tests. A second workflow pushes the worker image to AWS.",
+      other: [
+        "13 Alembic migrations, including a full-text index and foreign key indexes.",
+        "Passwords hashed with bcrypt, with matching timing for unknown accounts.",
+        "Analytics use salted IDs and never record document content.",
+        "A written 20-finding self-audit with a remediation spec.",
+      ],
+    },
+    limitations: [
+      "Vector search is an exact scan with no approximate-nearest-neighbour index yet. That is fine at this size but would not scale.",
+      "Answers currently cite every reranked passage, including some that were not used. A test marks this known gap.",
+      "The evaluation runs on fakes, so I have no measured accuracy for a real model yet.",
+    ],
     impact:
-      "FileQuery gives fast, accurate answers across multi-page technical manuals and reports, with no hallucinated content in my testing. I use it regularly myself to search through dense developer documentation.",
-    whyBuilt:
-      "I built FileQuery to work through a real, cloud-native RAG pipeline end to end, covering asynchronous file ingestion, vector search in PostgreSQL and dependable, grounded answer generation, rather than just calling an AI API directly.",
+      "I use it myself to search dense developer documentation. In my testing it answered from the uploaded files and declined to answer when the files did not contain the information, though I have not measured accuracy against a real model.",
+    docs: [
+      link(FILE, "docs/specs/public-demo-mode.md", "Public demo mode design"),
+      link(FILE, ".github/workflows/ci.yml", "CI workflow"),
+    ],
     databaseSchemaSrc: {
       url: "/assets/filequery_schema.png",
       width: 500,
@@ -263,99 +580,225 @@ Cloud and async pipeline:
   {
     title: "Gains",
     slug: "gains",
+    tier: "featured",
     url: "https://exercise-tracker-frontend-752853711822.europe-west1.run.app/demo",
     img: "/assets/gainsPage.png",
-    desc: "Gains is a streamlined workout tracker and routine builder made for the gym floor rather than the sofa. You can build custom training routines, log working sets in real time with no lag, and track progress through clear charts and achievements for streaks and personal bests.",
     pitch:
-      "A fast, distraction-free training companion for building routines, logging workouts live, and tracking progress through strength charts, streaks and personal bests.",
-    coreProblem:
-      "Most fitness apps are cluttered with social feeds and slow animations, which makes it tedious to log a set quickly during a short rest period, and gyms often have poor signal to begin with. Gains is built to be instant and distraction-free, and to keep working even when the connection does not.",
-    github: ["https://github.com/Akhere-G/exercise-tracker"],
+      "A fast workout tracker for the gym floor that coaches with clear, explainable rules and shows its reasoning.",
+    problem:
+      "Most fitness apps are cluttered, and logging a set during a short rest is slow, in gyms that often have poor signal. Gains is built to be quick and distraction-free, keeps the live workout safe on the device until it is finished, and explains every piece of coaching with the numbers behind it. I built it for my own training and have used it for several months.",
+    github: [`${GITHUB}/${GAINS}`],
     technologies: [
       "Next.js",
       "TypeScript",
-      "FastAPI",
-      "Zustand",
       "React",
+      "Zustand",
       "Tailwind CSS",
-      "Lucide React",
       "Python",
+      "FastAPI",
       "SQLAlchemy",
+      "PostgreSQL",
+      "Alembic",
+      "Vitest",
+      "Playwright",
+    ],
+    proof: [
+      { value: "210+", label: "automated backend tests" },
+      { value: "300+", label: "frontend tests" },
+      { value: "21", label: "browser tests run against a real backend" },
+      { value: "18", label: "database migrations" },
     ],
     features: [
       {
         icon: "TrendingUp",
-        title: "Smart Progression Suggestions",
+        title: "Progression Suggestions",
         description:
-          "After each set, suggests the next weight and rep target based on how the last session went, so progress happens one sensible step at a time.",
+          "Suggests the next weight and rep target for each exercise from how the last session went, so progress comes one sensible step at a time.",
       },
       {
         icon: "HeartPulse",
         title: "Burnout Checker",
         description:
-          "Spots the warning signs when lifts stall or effort stays high for weeks, and suggests an easier week before it turns into burnout.",
+          "Spots several lifts stalling, or effort staying very high, and suggests an easier week with the exact numbers shown as the reason.",
       },
       {
         icon: "BarChart",
         title: "Performance Stats",
         description:
-          "Charts show how many hard sets each muscle group gets every week, how recovered it is, and how strength compares to where it was.",
-      },
-      {
-        icon: "Target",
-        title: "Goal-Centred Training",
-        description:
-          "Set a weekly training target, a body weight goal or a lift to chase, and watch progress build from a one-minute onboarding.",
+          "Charts show hard sets per muscle group each week, how recovered each one is, and how strength compares to where it was.",
       },
       {
         icon: "Trophy",
-        title: "Achievements and Milestones",
+        title: "Milestones and Records",
         description:
-          "Fourteen achievements reward consistency, new personal bests and variety in training, each earned the moment it's unlocked.",
+          "Fourteen milestones, plus a history of personal bests and weekly streaks, each awarded the moment it is earned.",
       },
       {
         icon: "Dumbbell",
         title: "Built for the Gym Floor",
         description:
-          "Warm-ups, drop sets, supersets and rest timers, all in one live workout that survives a page refresh.",
-      },
-      {
-        icon: "Scale",
-        title: "Your Numbers, Your Units",
-        description:
-          "Switch between kilograms and pounds at any time, with history always kept accurate behind the scenes.",
+          "Warm-ups, drop sets, supersets and rest timers in one live workout that survives a page refresh or a dropped signal.",
       },
       {
         icon: "LayoutTemplate",
-        title: "Powerful Workout Templates",
+        title: "Templates and an AI Routine Builder",
         description:
-          "Pick a ready-made programme, or describe the training you want and let Gains build a routine to review before saving.",
+          "Pick a ready-made programme, or describe the training you want and review the AI's routine before saving it.",
       },
     ],
-    architecture: `Frontend:
-• Next.js App Router with TypeScript for quick page transitions and a responsive layout.
-• Zustand provides lightweight global state for the active workout session without triggering unnecessary re-renders.
-• Tailwind CSS handles styling, designed with clear contrast for dark mode.
-• Lucide React supplies the icon set.
-
-Backend:
-• Python and FastAPI for clean, lightweight REST endpoints.
-• SQLAlchemy manages user data, the exercise library, historical workout logs and per-exercise achievement records (streaks and personal bests).`,
-    challenges: [
-      "Designing for unreliable gym connectivity: Gyms often have dead zones and poor signal. I solved this by saving the active workout to the browser's local storage on every change, and only syncing the completed workout to the backend once it is finished, so a dropped connection or a crashed browser never costs the user their data.",
-      "Learning the App Router while designing properly: Balancing server and client components in the Next.js App Router took some care, so I designed the wireframes and user flows in Figma first, including empty states and loading states, to validate the layout before writing any code.",
-      "Splitting one fuzzy warning into two clear, measurable ones: the first version of the burnout checker mixed 'your lifts have stopped improving' and 'you've been training hard for weeks' into a single vague suggestion, with no clear number behind either half. I split it into two independent checks, each backed by a real measurement. Strength is tracked as each lift's estimated one-rep max (how much you could lift once, worked out from the weight and reps of your best set that session), and a lift counts as plateaued if that estimate has not grown, or has dropped by 5% or more, over its last four sessions. Fatigue is tracked as RPE, short for Rate of Perceived Exertion: a 1 to 10 difficulty score the user logs for a set themselves, based on how hard it felt. If the average RPE across recent sets passes a high-effort threshold, that counts as the second warning sign. Either measurement can suggest an easier week on its own, and the exact numbers behind it (the lift and how its estimate has changed, or the average RPE score) are shown as the reason, so the user can see precisely why they're being told to ease off rather than just being told to. A two-week cooldown after a suggestion stops it nagging after every single workout.",
-      "Keeping a full history of personal bests instead of just the latest one: every time a set beats a previous best weight, distance, reps or duration, or a weekly streak gets longer, it's saved as its own new entry rather than overwriting a single record. The current best for each lift is then worked out from that history, so nothing needs a separate 'is this still the record' check scattered through the code, and a single workout's page can show exactly which records it broke. When the achievement system first launched, existing users already had months of workout history with nothing to show for it, so I built a tool that replays a user's whole history, workout by workout, through the same functions that award achievements live. That way their past achievements come out exactly as they would have at the time, instead of needing separate one-off logic just for the catch-up.",
+    screenshots: [
+      {
+        src: "/assets/gains-workout.png",
+        alt: "A live workout showing four sets of lever chest press with a suggested next weight and reps.",
+        caption:
+          "The live workout suggests the next weight and reps for each exercise.",
+      },
+      {
+        src: "/assets/gains-routines.png",
+        alt: "A list of routines: push day, pull day, legs and core, and cardio and core.",
+        caption: "Routines start a workout in one tap.",
+      },
+      {
+        src: "/assets/gains-stats.png",
+        alt: "A stats overview with workouts, volume, time trained, sets and a weekly trend chart.",
+        caption: "Stats compare each period with the one before it.",
+      },
+      {
+        src: "/assets/gains-achievements.png",
+        alt: "A grid of achievements, including personal records and milestones.",
+        caption:
+          "Personal records and milestones are awarded when a workout is saved.",
+      },
     ],
-    tradeoffs: `I chose Zustand over Redux Toolkit here to keep the client state simple and free of boilerplate, so the interactive workout buttons could subscribe directly to state updates without any extra setup slowing the page down.
-
-Checking estimated one-rep max and self-reported RPE separately means either measurement can flag a problem on its own, which catches more real cases, but it also means a single hard week with no actual drop in estimated one-rep max can trigger a suggested easier week on self-reported effort alone. The two-week cooldown stops it repeating itself, but it also means a second, genuine reason to ease off within that window gets quietly ignored until the cooldown ends.
-
-Saving every personal best as its own entry, rather than one record that gets overwritten, keeps the full improvement history and makes an accurate catch-up possible for existing users, at the cost of a slightly heavier lookup every time the current bests are shown, rather than reading one already-known value.`,
+    architecture: {
+      diagram: {
+        src: "/assets/gains-architecture.svg",
+        alt: "How Gains fits together: a Next.js front end with local storage for the live workout, Next.js server code, and a FastAPI service layer over PostgreSQL, with an AI provider used only for the routine builder.",
+        width: 1000,
+        height: 430,
+      },
+      layers: [
+        {
+          name: "Frontend",
+          points: [
+            "Next.js App Router with TypeScript. Server components fetch the data for pages, and server actions handle every write.",
+            "Zustand holds the live workout, which is also saved to local storage on every change.",
+            "Features are organised in folders, each with its own actions, validation schema and types.",
+          ],
+        },
+        {
+          name: "Backend",
+          points: [
+            "FastAPI with thin routers (about 54 endpoints) over a services layer where the business rules live as plain, testable functions.",
+            "SQLAlchemy 2.0 and 18 Alembic migrations over 15 tables, on PostgreSQL in production and SQLite in development.",
+            "Progression, burnout, analytics and achievements are calculated on the server and sent to the browser ready to display.",
+          ],
+        },
+        {
+          name: "AI and security",
+          points: [
+            "Only the routine builder calls an AI model, Gemini first with Groq as a fallback.",
+            "JWT in an HTTP-only cookie, bcrypt password hashing, and rate limits on sign-in and registration.",
+          ],
+        },
+      ],
+    },
+    decisions: [
+      {
+        title: "Coaching runs on rules, not an AI model",
+        why: "Progression, burnout and milestone logic are plain rules. They cost nothing to run, give the same answer every time, and each one reports the numbers behind it. Only the routine builder uses an AI model.",
+        tradeoff:
+          "The coaching is only as smart as the thresholds I wrote, and it cannot adapt to an individual the way a learned model could.",
+        detail:
+          "Progression is double progression, with increments by unit, body region and equipment, gated on how manageable the last session's RPE or reps in reserve were.",
+        code: [
+          link(GAINS, "backend/app/services/progression.py"),
+          link(GAINS, "backend/app/services/deload.py"),
+        ],
+      },
+      {
+        title: "Keep every personal best as its own record",
+        why: "Each time a set beats a previous best, or a streak gets longer, it is saved as a new entry instead of overwriting one record. The current best is worked out from that history, so a workout page can show exactly which records it broke.",
+        tradeoff:
+          "Looking up the current bests is a slightly heavier query than reading one stored value.",
+        detail:
+          "The current best per lift comes from a window query (ROW_NUMBER over a partition). Because the history is append-only, a backfill can replay it through the same award functions the live app uses.",
+        code: [link(GAINS, "backend/app/services/achievement.py")],
+      },
+      {
+        title: "Store kilograms, convert in one place",
+        why: "The database holds kilograms only, and conversion to pounds lives in one module. That avoids rounding drift from converting back and forth, and history stays consistent when someone switches units.",
+        tradeoff:
+          "Every screen and every input has to go through the converter, so a missed call shows the wrong unit.",
+        code: [link(GAINS, "frontend/src/lib/units.ts")],
+      },
+      {
+        title: "Save the live workout on the device first",
+        why: "Gyms often have poor signal. The active workout is saved to local storage on every change and only sent to the server when it is finished, so a refresh, a crash or a dropped connection never loses a set.",
+        tradeoff:
+          "The workout lives on one device until it is finished, and the rest of the app still needs a connection, so this is not a full offline mode.",
+      },
+      {
+        title: "Check AI output, then save it all or not at all",
+        why: "The routine builder's reply is untrusted text. It is validated and shown as a preview, and the saved routines go in as one batch, so a model error can never leave a half-written plan.",
+        tradeoff:
+          "Invalid parts are dropped rather than repaired, so a routine can arrive thinner than the model intended. Without any AI key the feature returns an error and the app points to the ready-made programmes instead.",
+        detail:
+          "The model only sees a restricted exercise catalogue. Its JSON is validated with Pydantic, values are clamped, unknown exercise IDs are dropped, and the batch endpoint saves everything in one transaction.",
+        code: [link(GAINS, "backend/app/services/ai_builder.py")],
+      },
+    ],
+    challenges: [
+      {
+        title: "Turning one vague warning into two measurable ones",
+        problem:
+          "The first burnout checker mixed 'your lifts have stopped improving' with 'you have been training hard for weeks' into one fuzzy suggestion with no clear number behind it.",
+        approach:
+          "I split it into two independent checks. Strength is each lift's estimated one-rep max over its last four sessions: a lift counts as stalled if that estimate has not grown, or has dropped by 5% or more, and the warning needs at least two tracked lifts with 40% or more stalled. Effort is the average RPE (a 1 to 10 score the user logs for how hard a set felt), and an average of 9 or more over two weeks across at least three workouts counts as the second warning. A two-week cooldown stops it nagging.",
+        result:
+          "Either check can suggest an easier week on its own, and the exact numbers behind it are shown, so the user sees why they are being told to ease off.",
+        code: [link(GAINS, "backend/app/services/deload.py")],
+      },
+      {
+        title: "Giving existing users their achievements retroactively",
+        problem:
+          "When the achievement system launched, existing users had months of history and nothing to show for it.",
+        approach:
+          "I wrote a tool that replays a user's whole history, workout by workout, through the same functions that award achievements live, rather than separate one-off catch-up logic.",
+        result:
+          "Past achievements come out as they would have live. The one compromise is that they are stamped with the day of the catch-up, not the original workout date.",
+        code: [link(GAINS, "backend/app/services/achievement.py")],
+      },
+      {
+        title: "Designing every state before writing code",
+        problem:
+          "I was learning the Next.js App Router, including when to use server or client components, while also needing the interface to be clear under pressure at the gym.",
+        approach:
+          "I designed the main screens in Figma first, including empty, loading and error states, to settle the layout and flows before building them.",
+        result:
+          "The empty, loading and error states are part of every screen from the start, not added afterwards.",
+      },
+    ],
+    quality: {
+      tests:
+        "About 215 backend tests, about 300 Vitest tests and 21 Playwright tests.",
+      ci: "GitHub Actions runs pytest, lint, Vitest and a build, then the Playwright tests against an isolated real backend, plus an advisory dependency audit.",
+      other: [
+        "18 Alembic migrations.",
+        "Sign-in and registration rate limits that read the client address safely behind a proxy.",
+        "CSV export is sanitised against spreadsheet formula injection.",
+        "A written 25-finding self-audit with a spec for each finding.",
+      ],
+    },
+    limitations: [
+      "It is not a full offline mode. The live workout survives a dropped signal, but the rest of the app needs a connection.",
+      "Achievements awarded by the catch-up tool carry the catch-up date, not the original workout date.",
+      "Lift goals and routine weight targets are unfinished.",
+      "I have no performance benchmarks or other users' metrics, only my own months of use.",
+    ],
     impact:
-      "I have used Gains consistently over several months as my own workout companion, tracking lifts, adjusting my programme and measuring strength improvements against real data rather than guesswork.",
-    whyBuilt:
-      "I built Gains because I wanted a fast, simple tracker for my own training that focused on quick data entry and clear progress charts, without the clutter most fitness apps carry.",
+      "I have used Gains consistently for several months as my own workout companion, tracking lifts, adjusting my programme and measuring strength against real data.",
+    docs: [link(GAINS, ".github/workflows/ci.yml", "CI workflow")],
     databaseSchemaSrc: {
       url: "/assets/gains_schema.svg",
       width: 500,
@@ -365,128 +808,259 @@ Saving every personal best as its own entry, rather than one record that gets ov
   {
     title: "TaskFlow",
     slug: "task-flow",
+    tier: "featured",
     url: "https://taskflow-752853711822.europe-west2.run.app/demo",
     img: "/assets/taskFlowPage.png",
-    desc: "TaskFlow is a task management app that turns a daily list into something closer to a productivity dashboard. It combines flexible list and calendar views with repeating habits, an AI planning coach that breaks down large projects, and a built-in Pomodoro timer that logs focus time automatically.",
     pitch:
-      "A proactive task manager with calendar scheduling, an AI project coach, and visual workload insights, built to help you act on a list rather than just read it.",
-    coreProblem:
-      "A standard to-do list turns into an overwhelming backlog fairly quickly. It will not help you decide what to do first, it will not break a large project down into manageable steps, and it will not show you where your time actually went.",
-    github: ["https://github.com/Akhere-G/task-manager"],
+      "A task manager with calendar, board and repeating tasks, plus an assistant interface that lets AI tools like Claude manage your tasks with scoped, revocable access.",
+    problem:
+      "A plain to-do list turns into an overwhelming backlog. It will not help you decide what to do first, break a large project into steps, or show where your time went. TaskFlow adds calendar and board views, repeating tasks, AI that suggests changes you can accept or ignore, and statistics on your workload, and exposes the same actions to AI assistants through a secure API.",
+    github: [`${GITHUB}/${TASK}`],
     technologies: [
       "React",
       "TypeScript",
       "TanStack Query",
-      "Flask",
       "Tailwind CSS",
-      "Axios",
       "Recharts",
       "Python",
+      "Flask",
       "SQLAlchemy 2.0",
+      "PostgreSQL",
+      "Redis",
+      "Alembic",
       "JWT",
+      "MCP",
+    ],
+    proof: [
+      { value: "600+", label: "automated backend tests, some property-based" },
+      { value: "36", label: "tools exposed to AI assistants over MCP" },
+      {
+        value: "3",
+        label: "CI jobs, including browser tests on a real backend",
+      },
+      { value: "28", label: "files of written security audit specs" },
     ],
     features: [
       {
         icon: "CalendarDays",
         title: "Calendar View",
         description:
-          "See the week at a glance and drag tasks onto new days in seconds, so the schedule always matches the plan.",
+          "See the week at a glance and drag tasks onto new days, so the schedule always matches the plan.",
       },
       {
         icon: "Kanban",
         title: "Kanban Board",
         description:
-          "Move work from idea to done on a visual board, dragging each task across columns as projects move forward.",
+          "Move work across columns for each project, where each column can complete, reopen or trash a card dropped into it.",
       },
       {
         icon: "Sparkles",
         title: "Smart Prioritise",
         description:
-          "Sorts tasks into four priority quadrants with the Eisenhower Matrix, then lets AI suggest changes with a clear reason for each.",
+          "Sorts tasks into four quadrants with the Eisenhower Matrix, then lets AI suggest changes with a reason for each that you accept or ignore.",
       },
       {
         icon: "Repeat",
-        title: "Seamless Habits",
+        title: "Repeating Tasks",
         description:
-          "Set tasks to repeat and see what's coming up on the calendar, so recurring commitments are never lost track of.",
+          "Daily, weekly, monthly or yearly repeats, with chosen days, that show up ahead of time on the calendar.",
       },
       {
         icon: "Bell",
         title: "Reminders",
         description:
-          "Get timely push notifications, from half an hour ahead or at a time of your choice, so deadlines are never missed.",
-      },
-      {
-        icon: "Tag",
-        title: "Projects and Labels",
-        description:
-          "Group tasks into projects and tag them with labels, so work, home and everything in between stay in order.",
-      },
-      {
-        icon: "AlarmClock",
-        title: "Snooze",
-        description:
-          "Push a task to tomorrow, the weekend or a chosen date, keeping its time of day for when life gets busy.",
-      },
-      {
-        icon: "FileSpreadsheet",
-        title: "Import and Export",
-        description:
-          "Bring in tasks from a spreadsheet in one go, or export everything to CSV whenever a copy is needed.",
-      },
-      {
-        icon: "ListChecks",
-        title: "Break It Down",
-        description:
-          "Splits a large task into a checklist by hand or with AI, then ticks off progress one step at a time.",
-      },
-      {
-        icon: "MessageSquareText",
-        title: "Quick Add",
-        description:
-          "Capture an idea in seconds by typing it naturally; the AI fills in the details so nothing slips away.",
-      },
-      {
-        icon: "Timer",
-        title: "Pomodoro Timer",
-        description:
-          "Works in focused sprints and marks a task complete the moment a session ends, for getting more done in less time.",
+          "Several push reminders per task, from half an hour ahead or at a time you choose.",
       },
       {
         icon: "BarChart",
         title: "Stats and Planning",
         description:
-          "The Stats page shows progress over time, from yearly activity to backlog health and where time goes, for planning ahead with confidence.",
+          "Shows progress over time, backlog health, upcoming deadlines and where your time goes, across about fourteen charts.",
       },
     ],
-    architecture: `Frontend:
-• React and TypeScript single page application designed for fast interaction.
-• TanStack Query manages data fetching, optimistic updates and caching against the API.
-• Axios, configured with interceptors, handles JWT authentication seamlessly in the background.
-• Recharts renders the weekly workload and time log charts.
-
-Backend:
-• Python and Flask, structured with the Application Factory pattern.
-• SQLAlchemy 2.0 models the task schema, habit frequencies and session logs.
-• JWT sessions managed through secure HTTP only cookies.`,
-    challenges: [
-      "Ghost tasks versus batch generation: I had to decide how to project a repeating task onto future calendar days without flooding the database with hundreds of near-identical rows. I went with a ghost task approach, where a single master record exists and future occurrences are calculated on demand rather than generated in advance. This keeps the database small and makes editing the underlying schedule straightforward, though it took more care to get the calendar's rendering logic right than batch generation would have.",
-      "Letting a calendar drag edit the repeat pattern itself: a repeating task can run on more than one day at once, for example every Tuesday and Friday, or every 1 March and 8 August. Dragging just one of those occurrences to a new day needed to change only that day in the pattern, not restart the whole thing: dragging Tuesday onto Monday should turn 'Tuesday and Friday' into 'Monday and Friday', while dragging Tuesday onto Friday should leave just 'Friday', since that day is already there. I wrote one function that removes the day being dragged away from and adds the new one, automatically avoiding duplicates. A simple 'every few days' repeat, with no set days, just shifts forward or back as a whole instead. The same code also powers the one-tap snooze button, and checks that nobody else changed the task a moment before the drag.",
-      "Adding a Kanban board without building a second task system: each project can have its own columns, and each column can be set to do something automatically when a card is dropped in it, such as marking it done, marking it not done, or deleting it. Rather than invent new logic for the board, dropping a card reuses the same ordering system already built for dragging tasks in a list, and the column's action just calls the normal 'mark complete' or 'delete' code. So a card dropped in a 'Done' column is completed exactly as if it had been ticked off by hand, with no separate path for it.",
-      "Making sure AI priority suggestions can't be trusted blindly: the AI can look at up to 50 open tasks at once and suggest a better priority for each, with a short reason. Since the AI's reply is just text, every suggestion is checked against the real task list before it's shown: anything badly formed is thrown away, anything pointing at a task that doesn't exist is thrown away, and anything suggesting a priority the task already has is thrown away too. What is left is a short list the user can accept or ignore one at a time; nothing changes on its own.",
-      "Supporting several reminders per task without slowing things down: a task can have more than one reminder, for example an hour before and again at a chosen time. Rather than work out on every single check whether each reminder is due, each reminder stores the exact time it should fire, recalculated whenever the task's schedule changes. This keeps the background job that sends reminders fast and simple, at the cost of recalculating that time whenever a task's date changes, and the job itself has to run on a schedule, since nothing inside the app starts it automatically.",
+    screenshots: [
+      {
+        src: "/assets/taskflow-list.png",
+        alt: "The task list grouped into overdue, today and upcoming, with a project sidebar.",
+        caption: "List view: overdue, today and upcoming, grouped by project.",
+      },
+      {
+        src: "/assets/taskflow-calendar.png",
+        alt: "A month calendar with tasks and repeating tasks on each day.",
+        caption:
+          "Calendar view, including repeating tasks calculated ahead of time.",
+      },
+      {
+        src: "/assets/taskflow-matrix.png",
+        alt: "Tasks sorted into the four Eisenhower matrix quadrants.",
+        caption:
+          "Eisenhower matrix: drag a task between quadrants to change its priority.",
+      },
+      {
+        src: "/assets/taskflow-brief.png",
+        alt: "A daily brief summarising today's priorities and overdue work.",
+        caption: "The AI daily brief, written from your own tasks.",
+      },
+      {
+        src: "/assets/taskflow-stats.png",
+        alt: "A statistics dashboard with completion rate, streak and an activity heatmap.",
+        caption: "Statistics: completion rate, streak and a year of activity.",
+      },
     ],
-    tradeoffs: `I chose TanStack Query with Axios over Redux Toolkit here because it handles caching, refetching and error handling automatically, with far less setup than Redux needs. Axios also made it simple to refresh an expired login token in the background without the user noticing.
-
-Card and task order are stored as numbers with gaps between them rather than a strict 1, 2, 3 list, so moving one item is a single quick update instead of renumbering everything else. The tradeoff is an occasional clean-up pass once the gaps run out.
-
-Reminders trade a bit of extra recalculating, done every time a task's date changes, for a background job that stays a single simple check. Anything more than an hour late is skipped rather than sent late.
-
-AI priority suggestions only ever look at the 50 oldest open tasks, and every suggestion is checked against the real data before it's shown, so a made-up task or a suggestion that changes nothing never reaches the user.`,
+    architecture: {
+      diagram: {
+        src: "/assets/taskflow-architecture.svg",
+        alt: "How TaskFlow fits together: a React front end, a Flask API with services and a 36-tool MCP endpoint, PostgreSQL, Redis for rate limits, AI providers and an external reminder job.",
+        width: 1000,
+        height: 410,
+      },
+      layers: [
+        {
+          name: "Frontend",
+          points: [
+            "React and TypeScript single page app with Tailwind CSS.",
+            "TanStack Query handles fetching and caching. Moving tasks and cards update the screen instantly, and other changes refetch.",
+            "Axios refreshes the sign-in token in the background, and concurrent requests share one refresh.",
+            "Recharts draws the statistics.",
+          ],
+        },
+        {
+          name: "Backend",
+          points: [
+            "Python and Flask with the application factory pattern: about 59 routes, with routes calling services that call models.",
+            "SQLAlchemy 2.0 over 13 tables and 14 Alembic migrations on PostgreSQL, Marshmallow for validation.",
+            "JWT sessions in HTTP-only cookies with rotating, hashed refresh tokens.",
+          ],
+        },
+        {
+          name: "AI and integrations",
+          points: [
+            "Gemini with Groq as a fallback, behind timeouts and a daily per-user quota.",
+            "A hand-written MCP server (a stateless JSON-RPC endpoint) exposes 36 tools to AI assistants, with read or write token scopes.",
+            "Web push for reminders, sent by a scheduled job, and PostHog analytics behind cookie consent.",
+          ],
+        },
+        {
+          name: "Delivery",
+          points: [
+            "Docker Compose for local use, GitHub Actions, and Google Cloud Run in production.",
+          ],
+        },
+      ],
+    },
+    decisions: [
+      {
+        title: "Repeating tasks are calculated, not stored",
+        why: "A repeating task has one master record. Its future occurrences are worked out when the calendar needs them, so the database stays small and changing the schedule is a single edit.",
+        tradeoff:
+          "The calendar logic is harder to get right than generating rows in advance would have been, because every view has to project the repeats itself.",
+        detail:
+          "The recurrence module handles periods, slots and time-zone-aware next and previous occurrences, and the listing service projects them into the visible window. The recurrence rules are covered by property-based tests.",
+        code: [
+          link(TASK, `${TASK_BE}/app/utils/recurrence.py`),
+          link(TASK, `${TASK_BE}/app/services/task_listing.py`),
+          link(TASK, `${TASK_BE}/tests/utils/test_recurrence_properties.py`),
+        ],
+      },
+      {
+        title: "Store order as numbers with gaps",
+        why: "Dragging a task to a new spot updates one row instead of renumbering the whole list.",
+        tradeoff:
+          "When two neighbours run out of room, the list is renumbered once. That is rare, and it is done under a lock.",
+        detail:
+          "Positions are integers spaced 1,024 apart. A move puts the item between its two neighbours, looking up the real neighbour when the list is only partly loaded, and renumbers only when no whole number fits. Rows are locked during a move.",
+        code: [
+          link(TASK, `${TASK_BE}/app/services/order_service.py`),
+          link(TASK, `${TASK_BE}/app/utils/ordering.py`),
+        ],
+      },
+      {
+        title: "The board reuses the list's rules",
+        why: "Dropping a card in a Done column completes it exactly as if it had been ticked off, because the board calls the same code. There is no second path to keep in step.",
+        tradeoff:
+          "The board can only do what the task services allow. A column's drop action is limited to nothing, complete, reopen or trash.",
+        code: [link(TASK, `${TASK_BE}/app/services/board_service.py`)],
+      },
+      {
+        title: "Each reminder stores the time it should fire",
+        why: "The background job only has to ask which reminders are due, instead of working out the schedule for every task each time it runs.",
+        tradeoff:
+          "The fire time is recalculated whenever a task's date changes, anything more than an hour late is skipped instead of sent late, and the job needs an external scheduler because nothing inside the app starts it.",
+        detail:
+          "A precomputed, indexed fire_at column drives the query, and a fired-for marker prevents sending the same reminder twice.",
+        code: [link(TASK, `${TASK_BE}/app/run_reminders.py`)],
+      },
+      {
+        title: "Let AI assistants use the app through MCP",
+        why: "People can ask an assistant such as Claude to add, move or review tasks, using the same actions as the app, instead of the app copying its features into a chat window.",
+        tradeoff:
+          "It adds a second public surface to secure, so tokens are scoped to read or write, stored hashed, rate limited per token at 120 requests a minute, and covered by cross-user isolation tests.",
+        detail:
+          "The protocol layer is a hand-written, stateless JSON-RPC dispatcher with a tool registry that marks each tool read-only or destructive.",
+        code: [
+          link(TASK, `${TASK_BE}/app/mcp/protocol.py`),
+          link(TASK, `${TASK_BE}/app/mcp/registry.py`),
+        ],
+      },
+    ],
+    challenges: [
+      {
+        title: "Letting a calendar drag edit the repeat pattern",
+        problem:
+          "A repeating task can run on several days at once, for example every Tuesday and Friday. Dragging one occurrence to a new day has to change only that day in the pattern, not restart the whole thing.",
+        approach:
+          "One function removes the day being dragged from and adds the new one, avoiding duplicates. Dragging Tuesday onto Monday turns 'Tuesday and Friday' into 'Monday and Friday', and dragging Tuesday onto Friday leaves just 'Friday'. A simple 'every few days' repeat shifts as a whole. The change runs under a database row lock so two simultaneous edits cannot overlap.",
+        result:
+          "Moving a single occurrence on the calendar edits the real schedule, with the rules covered by property-based tests.",
+        code: [link(TASK, `${TASK_BE}/app/utils/recurrence.py`)],
+      },
+      {
+        title: "Not trusting AI priority suggestions",
+        problem:
+          "The AI looks at up to 50 open tasks and suggests a better priority for each, but its reply is just text that could be malformed or invent tasks.",
+        approach:
+          "Every suggestion is checked against the real task list before it is shown. Badly formed suggestions, suggestions for tasks that do not exist, and suggestions that match the current priority are all thrown away.",
+        result:
+          "What remains is a short list the user can accept or ignore one at a time. Nothing changes by itself.",
+        code: [link(TASK, `${TASK_BE}/app/services/ai_service.py`)],
+      },
+      {
+        title: "Keeping users signed in when requests race",
+        problem:
+          "When a login expires, several requests can fail at once and each try to refresh it. With rotating refresh tokens, the second refresh would use a token the first had already replaced and could sign the user out.",
+        approach:
+          "The frontend shares a single in-flight refresh between concurrent requests. On the server, refresh tokens are stored as SHA-256 hashes, each rotation records when it replaced the old token, and the old token is still accepted for a 10-second grace window.",
+        result:
+          "Simultaneous requests and tabs no longer invalidate each other, and a leaked database would not expose usable tokens.",
+        code: [
+          link(TASK, `${TASK_BE}/app/services/auth_service.py`),
+          link(TASK, "task-manager-frontend/src/services/api.ts"),
+        ],
+      },
+    ],
+    quality: {
+      tests:
+        "About 630 backend tests across 73 files (five use property-based testing with Hypothesis), about 390 frontend tests and 35 Playwright browser tests.",
+      ci: "GitHub Actions runs three jobs: frontend lint, type check, Vitest and build; backend tests against PostgreSQL 18; and Playwright against a real backend.",
+      other: [
+        "14 Alembic migrations with round-trip tests.",
+        "Cross-user isolation tests for the API and the MCP server.",
+        "About 15 rate limits on Redis plus a daily AI quota per user, and security headers including a report-only content security policy.",
+        "A written security audit with a spec for each finding. Several are already fixed, including hashed tokens, the refresh grace window, Redis rate limits and the security headers.",
+      ],
+    },
+    limitations: [
+      "Cross-site request protection relies on SameSite cookies instead of CSRF tokens.",
+      "The Pomodoro timer keeps its state in the browser only and does not record focus time.",
+      "Reminders need an external scheduler such as cron or Cloud Scheduler.",
+      "Only moves, reorders and board actions update the screen optimistically. Other changes refetch.",
+    ],
     impact:
-      "I use TaskFlow to see where my time is actually going each week, break down the tasks I kept putting off with the AI decomposition tool, and keep my focus consistent day to day.",
-    whyBuilt:
-      "I built TaskFlow to bring task scheduling, time tracking and AI assistance into one dashboard that actively helps you get through your work, rather than a list that just sits there.",
+      "I use TaskFlow to see where my time goes each week, and the Break It Down feature helped me start the tasks I kept putting off.",
+    docs: [
+      link(TASK, "docs/specs/public-demo-mode.md", "Public demo mode design"),
+      link(TASK, ".github/workflows/ci.yml", "CI workflow"),
+    ],
     databaseSchemaSrc: {
       url: "/assets/taskflow_schema.svg",
       width: 500,
@@ -496,24 +1070,24 @@ AI priority suggestions only ever look at the 50 oldest open tasks, and every su
   {
     title: "Expense Tracker",
     slug: "expense-tracker",
+    tier: "earlier",
     url: "https://ai-expense-tracker.netlify.app/",
     img: "/assets/expenseTrackerPage.png",
-    desc: "Expense Tracker is a full-stack personal finance app for monitoring day-to-day spending and managing invoices. Users can sign up securely or sign in with Google, record income and expenses, categorise transactions, and review spending in real time.",
     pitch:
-      "A full-stack personal finance app for tracking daily expenses, invoices and spending habits behind a secure user account.",
-    coreProblem:
-      "Keeping track of receipts and spending across several personal accounts gets disorganised fast. This app gives you one simple, centralised ledger for recording transactions, viewing categorised totals and managing client invoices.",
+      "An early full-stack project: a personal finance app with secure sign-in, Google sign-in and a categorised ledger of income, expenses and invoices.",
+    problem:
+      "Keeping track of receipts and spending across several accounts gets disorganised fast. This app gives one place to record transactions, view categorised totals and manage client invoices. I built it early on to learn backend fundamentals.",
     github: [
-      "https://github.com/Akhere-G/expense-tracker-frontend",
-      "https://github.com/Akhere-G/expense-tracker-backend",
+      `${GITHUB}/expense-tracker-frontend`,
+      `${GITHUB}/expense-tracker-backend`,
     ],
     technologies: [
       "React",
       "TypeScript",
       "Node.js",
+      "Express",
       "MongoDB",
       "Redux",
-      "Express",
       "Styled Components",
     ],
     features: [
@@ -521,56 +1095,57 @@ AI priority suggestions only ever look at the 50 oldest open tasks, and every su
         icon: "KeyRound",
         title: "User Authentication",
         description:
-          "Sign up securely with email and password, or sign in with Google OAuth.",
+          "Sign up with email and password, or sign in with Google OAuth.",
       },
       {
         icon: "Receipt",
         title: "Transaction Management",
         description:
-          "Full create, read, update and delete functionality for income and expense records.",
+          "Create, read, update and delete income and expense records.",
       },
       {
         icon: "ClipboardList",
         title: "Invoice Tracking",
-        description:
-          "Track client invoices alongside everyday expenses in the same place.",
+        description: "Track client invoices alongside everyday expenses.",
       },
       {
         icon: "Layers",
         title: "Centralised State",
         description:
-          "A Redux store keeps transaction lists and balances consistent across every view.",
+          "A Redux store keeps transaction lists and balances consistent across views.",
       },
     ],
-    architecture: `Frontend:
-• React single page application written in TypeScript.
-• Styled Components for modular, component scoped CSS.
-• A Redux store manages the user's session data and transaction history.
-
-Backend:
-• Node.js and Express RESTful API.
-• MongoDB as a document database for the transaction and user records.`,
-    challenges: [
-      "Learning core backend principles: I built this early on specifically to get hands on with RESTful API design, data modelling in MongoDB, and secure authentication flows, rather than to solve a problem I did not already have a simpler answer for.",
+    decisions: [
+      {
+        title: "A document database to learn it",
+        why: "I picked MongoDB with Express (the MERN stack) to get hands-on experience with document storage and quick schema changes for financial records.",
+        tradeoff:
+          "Financial data is relational by nature, so a SQL database would have been the safer choice for a real product.",
+      },
     ],
-    tradeoffs:
-      "I picked MongoDB with Express, the MERN stack, to get practical experience with document-oriented storage and rapid schema prototyping for financial records, which I had not worked with before.",
-    impact:
-      "This was an early milestone project for me, building a full authenticated, persisted application end to end with React, Node.js and MongoDB, which gave me the backend fundamentals I built on in later projects.",
-    whyBuilt:
-      "I built this to get solid, hands on experience with secure authentication and full CRUD functionality using React, Node.js and MongoDB, early in my development as an engineer.",
+    challenges: [
+      {
+        title: "Learning backend fundamentals",
+        problem:
+          "I had mostly built frontends and wanted to understand the other half.",
+        approach:
+          "I built a REST API with Express, modelled the data in MongoDB and implemented sign-in with Google OAuth.",
+        result:
+          "A complete authenticated, persisted app, and the backend basics I built on in later projects.",
+      },
+    ],
   },
   {
     title: "Movie Search",
     slug: "movie-search",
+    tier: "earlier",
     url: "https://ai-search-movie.netlify.app",
     img: "/assets/movieSearchPage.jpeg",
-    desc: "Movie Search is a responsive film discovery app built on TheMovieDB API. It lets you search across thousands of titles, view posters and plot summaries, and move through paginated results with a smooth fade-in animation.",
     pitch:
-      "A snappy movie search app with debounced queries, clean pagination and smooth image loading.",
-    coreProblem:
-      "Browsing a large media database feels clunky when every keystroke fires a new request, or when images pop onto the screen with no loading state. Movie Search debounces input and fades posters in as they load, so browsing stays smooth.",
-    github: ["https://github.com/Akhere-G/movie-search-app"],
+      "An early project: a movie search app with debounced queries, clean pagination and smooth image loading.",
+    problem:
+      "Browsing a large media database feels clunky when every keystroke fires a request, or when images pop onto the screen with no loading state. Movie Search debounces input and fades posters in as they load.",
+    github: [`${GITHUB}/movie-search-app`],
     technologies: ["React", "JavaScript", "TheMovieDB API", "CSS"],
     features: [
       {
@@ -588,28 +1163,34 @@ Backend:
         icon: "ImagePlay",
         title: "Animated Poster Loading",
         description:
-          "A custom higher-order component fades each poster in smoothly as it downloads, rather than letting it pop in.",
+          "A higher-order component fades each poster in as it downloads.",
       },
       {
         icon: "Share2",
         title: "Global Context",
         description:
-          "A lightweight React Context manages the current search query and page number across the app.",
+          "React Context holds the current search query and page number.",
       },
     ],
-    architecture: `Frontend:
-• React single page application consuming TheMovieDB's REST API directly.
-• React Context provides global state without pulling in an external library.
-• A higher-order component pattern manages image loading state and the fade-in transition.`,
-    challenges: [
-      "Debouncing search and loading images smoothly: I learned why debouncing input matters here, since typing quickly without it would have hit the API's rate limit, and I wrapped the poster images in a higher-order component so each one fades in once downloaded instead of flickering onto the page.",
+    decisions: [
+      {
+        title: "Context instead of Redux",
+        why: "React Context was enough for a query and a page number, and avoided a dependency the app did not need.",
+        tradeoff:
+          "It would not scale well to a larger app with a lot of shared state.",
+      },
     ],
-    tradeoffs:
-      "I used the React Context API rather than Redux here to keep the project light and avoid pulling in a dependency the app did not really need.",
-    impact:
-      "This project sharpened my front-end fundamentals around pagination, asynchronous image loading and consuming a third-party REST API cleanly, and it is still a genuinely useful little search tool.",
-    whyBuilt:
-      "I built this to practise clean integration with a third-party REST API, asynchronous data fetching, and polished UI transitions in React.",
+    challenges: [
+      {
+        title: "Debouncing and image loading",
+        problem:
+          "Typing quickly without debouncing would have hit the API's rate limit, and posters flickered onto the page.",
+        approach:
+          "I debounced the search input and wrapped each poster in a higher-order component that fades it in once downloaded.",
+        result:
+          "Fewer requests, and smoother browsing. It taught me early how much clear UX matters.",
+      },
+    ],
   },
 ];
 

@@ -40,8 +40,14 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
                 WebkitBoxOrient: "vertical",
               }}
             >
-              {project.desc}
+              {project.pitch}
             </p>
+            {project.proof && project.proof.length > 0 && (
+              <p className="text-sm text-gray-900 mb-4">
+                <span className="font-semibold">{project.proof[0].value}</span>{" "}
+                <span className="text-gray-600">{project.proof[0].label}</span>
+              </p>
+            )}
             <div className="flex flex-wrap gap-2 mb-4">
               {project.technologies.slice(0, 4).map((tech) => (
                 <span
@@ -66,7 +72,7 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
               >
                 Live Site
               </Link>
-              {project.github.length && (
+              {project.github.length > 0 && (
                 <Link
                   href={project.github[0]}
                   target="_blank"
