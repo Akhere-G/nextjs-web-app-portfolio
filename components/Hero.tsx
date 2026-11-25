@@ -14,6 +14,11 @@ export default function Hero() {
             React and Next.js on the front end to Python APIs, relational
             databases and cloud infrastructure on the back end.
           </p>
+          <p className="mt-4 text-lg text-gray-600 leading-relaxed">
+            My four main projects are each tested, built in a CI pipeline and
+            backed by a written self-audit, and each project page explains the
+            decisions I made and what they cost.
+          </p>
           <div className="mt-8">
             <Link
               href="/projects"
