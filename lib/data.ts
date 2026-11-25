@@ -84,6 +84,7 @@ const TASK = "task-manager";
 const TASK_BE = "task-manager-backend";
 const FILE = "file-query";
 const GAINS = "exercise-tracker";
+const FOOD = "food-tracker";
 
 const data: Project[] = [
   {
@@ -1094,6 +1095,234 @@ const data: Project[] = [
       width: 500,
       height: 400,
     },
+  },
+  {
+    title: "FoodTracker",
+    slug: "food-tracker",
+    tier: "featured",
+    url: "https://food-tracker-752853711822.europe-west1.run.app",
+    img: "/assets/foodTrackerPage.png",
+    pitch:
+      "A food diary that builds a personal daily target from a few questions, then shows how your meals measure up across calories, macros, vitamins and minerals.",
+    problem:
+      "Most food trackers ask you to log everything before they give you anything back, and they feel like a test you can fail. FoodTracker starts with a short guided plan, lets you try it as a guest, and then turns the meals you log into weekly, monthly and yearly views against your own targets.",
+    github: [`${GITHUB}/${FOOD}`],
+    technologies: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "Zod",
+      "Drizzle ORM",
+      "PostgreSQL",
+      "Better Auth",
+      "Docker",
+      "Google Cloud Run",
+      "Playwright",
+    ],
+    proof: [
+      { value: "11", label: "browser tests, run in CI against a real database" },
+      { value: "13", label: "unit test files covering plans, meals and reports" },
+      { value: "5", label: "database migrations, run before each deploy" },
+    ],
+    features: [
+      {
+        icon: "Target",
+        title: "A Plan Built Around You",
+        description:
+          "Six short steps turn your goal, weight and activity into daily calorie, protein, carbohydrate and fat targets, with an estimated target date.",
+      },
+      {
+        icon: "Save",
+        title: "Detailed Onboarding",
+        description:
+          "A guided setup covers your body basics, goal and pace, how the journey has felt, and the nutrients you want to focus on. You can do it as a guest and register afterwards.",
+      },
+      {
+        icon: "ClipboardList",
+        title: "Meal Logging",
+        description:
+          "Search for foods, pick a serving or enter grams, build a meal from several foods, and edit or delete it later.",
+      },
+      {
+        icon: "BarChart",
+        title: "Nutrition Reports",
+        description:
+          "See fibre, fats, vitamins and minerals for a week, month or year against targets, with a trend and the foods that contributed most.",
+      },
+      {
+        icon: "TrendingUp",
+        title: "Progress Dashboard",
+        description:
+          "Daily averages, period totals and your direction towards your target weight, without streaks or scores.",
+      },
+      {
+        icon: "KeyRound",
+        title: "Accounts and Settings",
+        description:
+          "Choose kg or lb, kcal or kJ and a colour theme, change your password, or schedule your account for deletion.",
+      },
+    ],
+    screenshots: [
+      {
+        src: "/assets/foodtracker-dashboard.png",
+        alt: "FoodTracker's weekly overview showing a daily calorie average against a 1,200 kcal target, period totals, protein, carbohydrate and fat progress bars, and a weight direction line towards a goal weight.",
+        caption:
+          "The weekly overview: calories, macros and progress towards your goal weight.",
+      },
+      {
+        src: "/assets/foodtracker-nutrition.png",
+        alt: "The nutrition detail page with a list of fats, a selected fibre nutrient showing a daily bar chart across the week against a 30 g goal, and top food sources.",
+        caption:
+          "Nutrition detail: every nutrient against its target, with a daily chart for the one you pick.",
+      },
+      {
+        src: "/assets/foodtracker-food-search.png",
+        alt: "An Add food dialog with the search term chicken breast and a list of matching foods.",
+        caption: "Searching for a food to add to a meal.",
+      },
+      {
+        src: "/assets/foodtracker-add-meal.png",
+        alt: "The Add meal page with three foods (oats, banana and soy yogurt) with gram amounts, and a summary of the meal's calories, protein, carbohydrate and fat that has not been saved yet.",
+        caption:
+          "Building a meal: amounts in grams, with the meal's totals updating before you save.",
+      },
+      {
+        src: "/assets/foodtracker-goal.png",
+        alt: "The goal step of FoodTracker's guided setup, with options to lose, maintain or gain weight, a dream weight field and a choice of weekly pace.",
+        caption: "Setup asks about your goal and how fast you want to go.",
+      },
+      {
+        src: "/assets/foodtracker-plan.png",
+        alt: "FoodTracker's plan summary showing daily calories, protein, carbohydrate and fat, an estimated target date and a note that this is an estimate.",
+        caption:
+          "The plan summary shows daily targets and says plainly that they are an estimate.",
+      },
+    ],
+    architecture: {
+      layers: [
+        {
+          name: "Frontend",
+          points: [
+            "Next.js App Router and React, with Tailwind CSS and accessible component primitives.",
+            "react-hook-form with shared Zod schemas, so the browser and the server check input the same way.",
+            "Every page has a loading skeleton, and slow food lookups keep what you typed on screen.",
+          ],
+        },
+        {
+          name: "Backend",
+          points: [
+            "Server actions call services, which call repositories. A shared wrapper turns thrown errors into typed results the forms can show.",
+            "Better Auth handles email and password sign-in, and every service call starts by requiring the signed-in user.",
+            "Meal queries are filtered by the signed-in user's id.",
+          ],
+        },
+        {
+          name: "Data",
+          points: [
+            "PostgreSQL with Drizzle ORM and 5 migrations.",
+            "Nutrient amounts are stored per 100 g, so any serving size can be worked out from them.",
+            "Food search and details come from third-party food databases, including Open Food Facts for packaged products.",
+          ],
+        },
+        {
+          name: "Delivery",
+          points: [
+            "A multi-stage Docker image that runs as a non-root user.",
+            "Cloud Build runs the database migrations as a Cloud Run job, and only then deploys the app to Cloud Run with Cloud SQL.",
+          ],
+        },
+      ],
+    },
+    decisions: [
+      {
+        title: "The server works out the nutrition, not the browser",
+        why: "The browser only says which food and how much. The server looks up the nutrition itself and checks the chosen serving exists, so a changed request cannot invent calories.",
+        tradeoff:
+          "Saving a meal needs the food service to answer, so if it is down the save fails with an error instead of working offline.",
+        detail:
+          "The meal service loads details for each food from the provider and resolves every entry to grams before writing anything. Failures from the provider are turned into one friendly error.",
+        code: [
+          link(FOOD, "app/features/meals/service.ts"),
+          link(FOOD, "app/features/food/service.ts"),
+        ],
+      },
+      {
+        title: "Keep a copy of each food the first time it is logged",
+        why: "Reports are worked out from FoodTracker's own database, so they stay fast and do not depend on an outside service being up.",
+        tradeoff:
+          "The saved copy is never refreshed. If the source later corrects a food's nutrition, existing logs keep the old numbers.",
+        detail:
+          "A food is inserted once for each source and external id, with its nutrients stored per 100 g and its servings alongside. Later inserts of the same food do nothing.",
+        code: [
+          link(FOOD, "app/features/food/repository.ts"),
+          link(FOOD, "app/features/nutrition/report.ts"),
+        ],
+      },
+      {
+        title: "Editing a meal replaces its foods in one step",
+        why: "Saving an edited meal swaps the old list of foods for the new one together, so a meal is never left half-updated.",
+        tradeoff:
+          "Individual entries are not tracked over time, so there is no history of what a meal used to contain.",
+        detail:
+          "The update, the delete of old entries and the insert of new ones run in one database transaction, and the meal is matched on both its id and the signed-in user.",
+        code: [link(FOOD, "app/features/meals/repository.ts")],
+      },
+      {
+        title: "Let people try the app before signing up",
+        why: "Asking for an account before showing any value loses people. Guests answer the setup questions first and see their plan before they register.",
+        tradeoff:
+          "Guest answers live only in that browser, so clearing site data or switching device loses them.",
+        detail:
+          "The draft is kept in local storage, validated with the same schema when it is read back, and carried into registration.",
+        code: [link(FOOD, "app/features/onboarding/draft.ts")],
+      },
+    ],
+    challenges: [
+      {
+        title: "Turning a few answers into a sensible target",
+        problem:
+          "People need a daily target, but asking for a lot of detail puts them off, and an aggressive target can be unhealthy.",
+        approach:
+          "The plan uses a standard formula for resting energy, scaled by activity level, then adjusts for the chosen weekly pace. Calories never drop below 1,200, protein is set from body weight, and a fast pace triggers a warning.",
+        result:
+          "A plan that is clearly labelled as an estimate, with the formula and its limits covered by unit tests.",
+        code: [link(FOOD, "app/features/onboarding/nutrition-plan.ts")],
+      },
+      {
+        title: "Browser tests that do not depend on the internet",
+        problem:
+          "Food search relies on outside services, which would make end-to-end tests slow and flaky.",
+        approach:
+          "A switch replaces the real food provider with a fixed set of fixture foods. CI turns it on and runs the browser tests against a real Postgres database.",
+        result:
+          "The add, replace and delete meal flows are tested end to end, including validation of gram amounts.",
+        code: [
+          link(FOOD, "app/features/food/providers/FixtureFoodProvider.ts"),
+          link(FOOD, "e2e/meal-crud.spec.ts"),
+        ],
+      },
+    ],
+    quality: {
+      tests:
+        "13 unit test files (about 35 cases) and 11 Playwright browser tests across 5 files, covering sign-in screens, guest setup, meals, and nutrition reports.",
+      ci: "GitHub Actions runs two jobs on each pull request: lint, type check, unit tests and a production build; and Chromium browser tests against PostgreSQL with seeded data.",
+      other: [
+        "5 database migrations, run as a separate Cloud Run job before each deploy.",
+        "Input is checked with Zod on the server, and meal changes are limited to the signed-in user's own meals.",
+        "The container image is multi-stage and runs as a non-root user.",
+      ],
+    },
+    limitations: [
+      "Barcode scanning is not built yet. The barcode tab is a placeholder.",
+      "Foods can only be added from search. There are no custom foods, favourites or saved meals yet.",
+      "Food search and details depend on one outside service, with no fallback if it is down.",
+      "Deleting a meal is permanent, and there is no undo.",
+    ],
+    docs: [
+      link(FOOD, ".github/workflows/tests.yml", "CI workflow"),
+      link(FOOD, "deploy/gcp/README.md", "Cloud Run deployment guide"),
+    ],
   },
   {
     title: "Expense Tracker",

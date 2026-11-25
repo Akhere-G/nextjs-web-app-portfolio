@@ -15,7 +15,7 @@ export default function Hero() {
             databases and cloud infrastructure on the back end.
           </p>
           <p className="mt-4 text-lg text-gray-600 leading-relaxed">
-            My four main projects are each covered by automated tests and a CI
+            My five main projects are each covered by automated tests and a CI
             pipeline, and each project page explains the decisions I made and
             what they cost.
           </p>

@@ -130,6 +130,7 @@ export default function AboutPage() {
               <ul className="space-y-2 text-gray-600">
                 <li>Python with Flask and FastAPI</li>
                 <li>Node.js and Express</li>
+                <li>Next.js server actions with Better Auth</li>
                 <li>Socket.IO realtime updates</li>
                 <li>AI integrations (Gemini, Groq, Bedrock, MCP)</li>
                 <li>pytest</li>
@@ -140,7 +141,9 @@ export default function AboutPage() {
                 Database & Cloud
               </h3>
               <ul className="space-y-2 text-gray-600">
-                <li>PostgreSQL with pgvector, SQLAlchemy and Alembic</li>
+                <li>
+                  PostgreSQL with pgvector, SQLAlchemy, Alembic and Drizzle ORM
+                </li>
                 <li>MongoDB and Redis</li>
                 <li>AWS (S3, Lambda, SQS, Bedrock)</li>
                 <li>Google Cloud Run and Cloud Tasks</li>
