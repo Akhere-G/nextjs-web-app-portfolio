@@ -95,15 +95,8 @@ export default function AboutPage() {
               <span className="font-semibold text-gray-900">
                 I review my own work.{" "}
               </span>
-              Each of the four projects has a written self-audit with graded
-              findings and specs for fixing them, such as{" "}
-              <Link
-                href="/projects/file-query#challenges"
-                className="underline hover:text-gray-900 transition-colors"
-              >
-                the FileQuery rate limiter that silently did nothing
-              </Link>
-              .
+              I look for security, maintainability and performance problems in
+              my own code, write down what I find, and fix it.
             </li>
             <li>
               <span className="font-semibold text-gray-900">
