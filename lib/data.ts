@@ -333,7 +333,6 @@ const data: Project[] = [
         "40 Alembic migrations, including backfill scripts with their own tests.",
         "Google refresh tokens are encrypted at rest.",
         "Rate limits on AI and flight-search endpoints.",
-        "Written security, maintainability and performance audits (kept in my private planning notes).",
       ],
     },
     limitations: [
@@ -389,7 +388,7 @@ const data: Project[] = [
         value: "14",
         label: "question evaluation set for the retrieval pipeline",
       },
-      { value: "20", label: "findings in a written self-audit" },
+      { value: "13", label: "database migrations" },
     ],
     features: [
       {
@@ -563,7 +562,6 @@ const data: Project[] = [
         "13 Alembic migrations, including a full-text index and foreign key indexes.",
         "Passwords hashed with bcrypt, with matching timing for unknown accounts.",
         "Analytics use salted IDs and never record document content.",
-        "A written 20-finding self-audit with a remediation spec.",
       ],
     },
     limitations: [
@@ -793,7 +791,6 @@ const data: Project[] = [
         "18 Alembic migrations.",
         "Sign-in and registration rate limits that read the client address safely behind a proxy.",
         "CSV export is sanitised against spreadsheet formula injection.",
-        "A written 25-finding self-audit with a spec for each finding.",
       ],
     },
     limitations: [
