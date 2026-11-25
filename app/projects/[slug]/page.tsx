@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import data, { type CodeLink } from "@/lib/data";
 import { getFeatureIcon } from "@/lib/icons";
+import ProjectActionLinks from "@/components/ProjectActionLinks";
 
 interface PageProps {
   params: Promise<{
@@ -336,31 +337,12 @@ export default async function ProjectDetailPage({ params }: PageProps) {
           <p className="text-xl text-gray-900 font-medium max-w-3xl mb-8">
             {project.pitch}
           </p>
-          <div className="flex items-center gap-6 mb-8">
-            <a
-              href={project.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center px-6 py-3 bg-gray-900 text-white text-sm font-medium hover:bg-gray-700 transition-colors"
-            >
-              Live demo
-            </a>
-            {project.github.map((href, index) => (
-              <a
-                key={href}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-900 hover:text-gray-700 underline transition-colors"
-              >
-                {project.github.length > 1
-                  ? index === 0
-                    ? "Frontend code"
-                    : "Backend code"
-                  : "Code on GitHub"}
-              </a>
-            ))}
-          </div>
+          <ProjectActionLinks
+            projectSlug={project.slug}
+            projectTier={project.tier}
+            demoUrl={project.url}
+            githubUrls={project.github}
+          />
           <div className="flex flex-wrap gap-2 mb-8">
             {project.technologies.map((tech) => (
               <span

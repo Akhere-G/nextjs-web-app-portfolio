@@ -27,6 +27,10 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
             <h2 className="text-xl font-semibold text-gray-900 mb-2">
               <Link
                 href={`/projects/${project.slug}`}
+                data-track="project_details_opened"
+                data-track-project-slug={project.slug}
+                data-track-project-tier={project.tier}
+                data-track-source="project_grid_title"
                 className="hover:text-gray-700 transition-colors"
               >
                 {project.title}
@@ -68,6 +72,10 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
                 href={project.url}
                 target="_blank"
                 rel="noopener noreferrer"
+                data-track="project_live_demo_opened"
+                data-track-project-slug={project.slug}
+                data-track-project-tier={project.tier}
+                data-track-source="project_grid"
                 className="text-gray-900 hover:text-gray-700 underline transition-colors"
               >
                 Live Site
@@ -77,6 +85,9 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
                   href={project.github[0]}
                   target="_blank"
                   rel="noopener noreferrer"
+                  data-track="project_source_opened"
+                  data-track-project-slug={project.slug}
+                  data-track-source="project_grid"
                   className="text-gray-600 hover:text-gray-900 underline transition-colors"
                 >
                   GitHub
@@ -84,6 +95,10 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
               )}
               <Link
                 href={`/projects/${project.slug}`}
+                data-track="project_details_opened"
+                data-track-project-slug={project.slug}
+                data-track-project-tier={project.tier}
+                data-track-source="project_grid_details"
                 className="text-gray-900 hover:text-gray-700 underline transition-colors"
               >
                 Details

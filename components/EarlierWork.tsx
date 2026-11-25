@@ -24,6 +24,10 @@ export default function EarlierWork({ projects }: EarlierWorkProps) {
               <h3 className="font-semibold text-gray-900 mb-1">
                 <Link
                   href={`/projects/${project.slug}`}
+                  data-track="project_details_opened"
+                  data-track-project-slug={project.slug}
+                  data-track-project-tier={project.tier}
+                  data-track-source="earlier_work_title"
                   className="hover:text-gray-700 transition-colors"
                 >
                   {project.title}
@@ -35,12 +39,20 @@ export default function EarlierWork({ projects }: EarlierWorkProps) {
                   href={project.url}
                   target="_blank"
                   rel="noopener noreferrer"
+                  data-track="project_live_demo_opened"
+                  data-track-project-slug={project.slug}
+                  data-track-project-tier={project.tier}
+                  data-track-source="earlier_work"
                   className="text-gray-900 hover:text-gray-700 underline transition-colors"
                 >
                   Live demo
                 </Link>
                 <Link
                   href={`/projects/${project.slug}`}
+                  data-track="project_details_opened"
+                  data-track-project-slug={project.slug}
+                  data-track-project-tier={project.tier}
+                  data-track-source="earlier_work_details"
                   className="text-gray-900 hover:text-gray-700 underline transition-colors"
                 >
                   Details

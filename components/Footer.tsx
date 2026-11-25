@@ -13,6 +13,9 @@ export default function Footer() {
               href="https://github.com/Akhere-G"
               target="_blank"
               rel="noopener noreferrer"
+              data-track="contact_method_selected"
+              data-track-method="github"
+              data-track-placement="footer"
               className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
             >
               GitHub
@@ -21,6 +24,9 @@ export default function Footer() {
               href="https://linkedin.com"
               target="_blank"
               rel="noopener noreferrer"
+              data-track="contact_method_selected"
+              data-track-method="linkedin"
+              data-track-placement="footer"
               className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
             >
               LinkedIn

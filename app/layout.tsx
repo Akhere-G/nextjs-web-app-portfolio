@@ -22,6 +22,7 @@ export const metadata: Metadata = {
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ClickTracker from "@/components/ClickTracker";
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -33,6 +34,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
+        <ClickTracker />
       </body>
     </html>
   );

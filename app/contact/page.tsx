@@ -21,6 +21,9 @@ export default function ContactPage() {
               <h3 className="font-semibold text-gray-900 mb-3">Email</h3>
               <a
                 href="mailto:akhereaihoeghinlan@gmail.com"
+                data-track="contact_method_selected"
+                data-track-method="email"
+                data-track-placement="contact_page"
                 className="text-gray-600 hover:text-gray-900 transition-colors"
               >
                 akhereaihoeghinlan@gmail.com
@@ -32,6 +35,9 @@ export default function ContactPage() {
                 href="https://github.com/Akhere-G"
                 target="_blank"
                 rel="noopener noreferrer"
+                data-track="contact_method_selected"
+                data-track-method="github"
+                data-track-placement="contact_page"
                 className="text-gray-600 hover:text-gray-900 transition-colors"
               >
                 github.com/Akhere-G
@@ -43,6 +49,9 @@ export default function ContactPage() {
                 href="https://linkedin.com/in/akhereihoeghinlan"
                 target="_blank"
                 rel="noopener noreferrer"
+                data-track="contact_method_selected"
+                data-track-method="linkedin"
+                data-track-placement="contact_page"
                 className="text-gray-600 hover:text-gray-900 transition-colors"
               >
                 linkedin.com/in/akhereihoeghinlan
